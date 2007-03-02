@@ -39,7 +39,7 @@
 <?php $div_id = gutenberg_get_next_div_id(); ?>
               <div id="<?php print $div_id;?>">
                 <div id="<?php print $div_id;?>-inner" class="pkg">
-                  <?php if ($title): print '<h2 class="date-header">'. $title .'</h2>'; endif; ?>
+                  <?php if ($title): print '<h2 class="entry-header">'. $title .'</h2>'; endif; ?>
                   <?php if ($help): print $help; endif; ?>
                   <?php if ($messages): print $messages; endif; ?>
 
