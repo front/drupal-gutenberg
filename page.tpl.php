@@ -18,8 +18,8 @@
         </div>
         <div id="pagebody">
            <div id="pagebody-inner" class="pkg">
-<?php $div_id = gutenberg_get_next_div_id(); ?>
 <?php if ($sidebar_left): ?>
+<?php $div_id = gutenberg_get_next_div_id(); ?>
               <div id="<?php print $div_id;?>">
                 <div id="<?php print $div_id;?>-inner" class="pkg">
 <?php if ($search_box): ?>
@@ -50,8 +50,8 @@
                 </div>
               </div>
 
-<?php $div_id = gutenberg_get_next_div_id(); ?>
 <?php if ($sidebar_right): ?>
+<?php $div_id = gutenberg_get_next_div_id(); ?>
               <div id="<?php print $div_id;?>">
                 <div id="<?php print $div_id;?>-inner" class="pkg">
 <?php if ($search_box): ?>
@@ -70,6 +70,5 @@
         </div>
      </div>
   </div>
-  <?php print $closure ?>
 </body>
 </html>
