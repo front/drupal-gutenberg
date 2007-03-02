@@ -1,5 +1,5 @@
 <?php if (!$page) print theme('date_header', $node->created); ?>
-<a id="a000059"></a>
+<a id="a<?php print $node->nid;?>"></a>
 <div class="entry" id="entry-<?php print $node->nid;?>">
 
 <?php if (!$page) { ?>   <h3 class="entry-header"><?php print $title ?></h3><?php }?>

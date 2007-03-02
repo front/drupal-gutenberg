@@ -70,5 +70,6 @@
         </div>
      </div>
   </div>
+  <?php print $closure ?>
 </body>
 </html>
