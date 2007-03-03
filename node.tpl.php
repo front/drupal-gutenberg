@@ -4,7 +4,7 @@
 
 <?php if (!$page) { ?>   <h3 class="entry-header"><?php print $title ?></h3><?php }?>
    <div class="entry-content">
-<div class="entry-userpic"><?php print $picture ?></div>
+<?php if ($picture) {?><div class="entry-userpic"><?php print $picture ?></div><?php }?>
       <div class="entry-body"><?php print $content ?>
          
          <p class="entry-footer">
