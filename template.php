@@ -2,6 +2,27 @@
 // $Id$
 
 /**
+ * Override or insert PHPTemplate variables into the templates.
+ * Mostly, we use this to change the default Submited By and title text.
+ */
+function _phptemplate_variables($hook, $vars) {
+  if ($hook == 'node') {
+    $node = $vars['node'];
+    if (theme_get_setting('toggle_node_info_' . $node->type)) {
+      $vars['submitted'] = t('Posted by !a on @b.', array('!a' => theme('username', $node), '@b' => format_date($node->created)));
+    }
+    return $vars;
+  }
+  elseif ($hook == 'comment') {
+    $comment = $vars['comment'];
+    $vars['title'] = check_plain($comment->subject);
+    $vars['submitted'] = t('Posted by ') . theme('username', $comment) .' | '. l(format_date($comment->timestamp), $_GET['q'], NULL, NULL, "comment-$comment->cid");
+    return $vars;
+  }
+  return array();
+}
+
+/**
  * Movable Type uses a custom body class to determine what the current layout
  * is. This function spits out an appropriate class string based on the presence
  * of right or left sidebars.
@@ -41,27 +62,40 @@ function gutenberg_get_next_div_id() {
   return $steps[$step++];
 }
 
+/**
+ * Movable Type does some odd things regarding page titles. Where Drupal sets a
+ * global page title and treats it the same across all pages, Movable Type treats
+ * different bits of content as pseudo-titles on different pages. To make this
+ * work, we let node.tpl.php handle the display of the node's title on node pages,
+ * and theme the title as a content-nav element on all others.
+ */
+function gutenberg_page_title($title) {
+  if (arg(0) == 'node' && is_numeric(arg(1))) {
+    return '';
+  }
+  else {
+    return '<p class="content-nav">'. $title .'</p>';
+  }
+}
 
 /**
- * Override or insert PHPTemplate variables into the templates.
- * Mostly, we use this to change the default Submited By and title text.
+ * Movable Type's default templates start and end both the right and left
+ * sidebars with identical search blocks, feed-links, and powered-by messages.
+ * In Drupal-land, we would style the closure of the region. To make these
+ * funky styles happy, we'll special-case these particular chunks of content.
+ * If you want to change them or alter how they work, feel free to modify the
+ * sidebar-open.tpl.php and sidebar-close.tpl.php files.
  */
-function _phptemplate_variables($hook, $vars) {
-  if ($hook == 'node') {
-    $node = $vars['node'];
-    if (theme_get_setting('toggle_node_info_' . $node->type)) {
-      $vars['submitted'] = t('Posted by !a on @b.', array('!a' => theme('username', $node), '@b' => format_date($node->created)));
-    }
-    return $vars;
-  }
-  elseif ($hook == 'comment') {
-    $comment = $vars['comment'];
-    $vars['title'] = check_plain($comment->subject);
-    $vars['submitted'] = t('Posted by ') . theme('username', $comment) .' | '. l(format_date($comment->timestamp), $_GET['q'], NULL, NULL, "comment-$comment->cid");
-    return $vars;
-  }
+function gutenberg_sidebar_open($column, $search_box = '') {
+  static $output;
+  $output = _phptemplate_callback('sidebar-open', array('column' => $column, 'first' => !isset($output), 'search_box' => $search_box), array('column_opening-'. $column));
+  return $output;
+}
 
-  return array();
+function gutenberg_sidebar_close($column) {
+  static $output;
+  $output = _phptemplate_callback('sidebar-close', array('column' => $column, 'first' => !isset($output)), array('column_closure-'. $column));
+  return $output;
 }
 
 /**
@@ -70,8 +104,8 @@ function _phptemplate_variables($hook, $vars) {
  * rendering the search form.
  */
 function gutenberg_search_theme_form($form) {
-  $form['search_theme_form_keys']['#size'] = 20;
-
+  $form['search_theme_form_keys']['#size'] = 15;
+  $form['search_theme_form_keys']['#id'] = 'search';
   $output .= '<div id="search" class="container-inline">';
   $output .= '<label for="edit-search-theme-form-keys">Search this blog: </label><br />';
   $output .= drupal_render($form['search_theme_form_keys']);
@@ -83,13 +117,14 @@ function gutenberg_search_theme_form($form) {
  * Movable Type automatically outputs a formatted divider between nodes posted on
  * different days. This function duplicates that feature: calling
  * theme('date_header', $node->created) in node.tpl.php will output just the right
- * markup.
+ * markup. Movable Type also tends to only print its date headers on the front
+ * page. So, for now, we also return empty if we're on any page other than <front>.
  */
 function gutenberg_date_header($date, $format = 'F d, Y') {
   static $old;
   $new = date($format, $date);
 
-  if ($old != $new) {
+  if ($old != $new && drupal_is_front_page()) {
     $old = $new;
     return '<h2 class="date-header">' . $new . '</h2>';
   }
@@ -139,7 +174,8 @@ function gutenberg_links($links, $attributes = array('class' => 'links')) {
 /**
  * Drupal normally includes all kinds of slick classes to determine whether a
  * list item is a leaf node or a branch, but no. We'll strip those out and
- * make them look like MT's defaults.
+ * make them look like MT's defaults. We'll also do the same stuff to themed
+ * item lists; many sidebar blocks use that function to output lists of links.
  */
 function gutenberg_menu_tree($pid = 1) {
   if ($tree = menu_tree($pid)) {
@@ -151,19 +187,66 @@ function gutenberg_menu_item($mid, $children = '', $leaf = TRUE) {
   return '<li class="module-list-item">'. menu_item_link($mid) . $children ."</li>\n";
 }
 
+function gutenberg_item_list($items = array(), $title = NULL, $type = 'ul', $attributes = NULL) {
+  if (isset($title)) {
+    $output .= '<h3>'. $title .'</h3>';
+  }
 
+  if (isset($attributes['class'])) {
+    $attributes['class'] .= ' module-list';
+  }
+  else {
+    $attributes['class'] = 'module-list';
+  }
+
+  if (!empty($items)) {
+    $output .= "<$type" . drupal_attributes($attributes) . '>';
+    foreach ($items as $item) {
+      $attributes = array();
+      $children = array();
+      if (is_array($item)) {
+        foreach ($item as $key => $value) {
+          if ($key == 'data') {
+            $data = $value;
+          }
+          elseif ($key == 'children') {
+            $children = $value;
+          }
+          else {
+            $attributes[$key] = $value;
+          }
+        }
+      }
+      else {
+        $data = $item;
+      }
+      if (count($children) > 0) {
+        $data .= theme('item_list', $children, NULL, $type, $attributes); // Render nested list
+      }
+      $output .= '<li class="module-list-item">'. $data .'</li>';
+    }
+    $output .= "</$type>";
+  }
+  return $output;
+}
 
 /**
  * Wrap the display of comments in Movable Type's standard divs.
  */
 function gutenberg_comment_wrapper($content, $type = null) {
-  $output .= '<div id="comments" class="comments">';
-  $output .= '<div class="comments-content">';
-  $output .= '<h3 class="comments-header">Comments</h3>';
-  $output .= $content;
-  $output .= '</div>';
-  $output .= '</div>';
+  if ($content) {
+    $output .= '<div id="comments" class="comments">';
+    $output .= '<div class="comments-content">';
+    $output .= '<h3 class="comments-header">Comments</h3>';
+    $output .= $content;
+    $output .= '</div>';
+    $output .= '</div>';
+  }
   return $output;
+}
+
+function gutenberg_feed_icon($url) {
+  return '<a href="'. check_url($url) .'" class="feed-icon">'. t("Subscribe to this blog's feed") .'</a>';
 }
 
 /**
@@ -176,11 +259,11 @@ function gutenberg_custom_pager($nav_array, $node, $pager) {
     $links[] = l(t('‹ ') . $prev->title, 'node/'. $prev->nid);
   }
 
-  $links[] = l(t('Main'), '/');
+  $links[] = l(t('Main'), '');
 
   if (is_numeric($nav_array['next'])) {
     $next = node_load($nav_array['next']);
-    $links[] = l(t('‹ ') . $next->title, 'node/'. $next->nid);
+    $links[] = l($next->title . t(' ›'), 'node/'. $next->nid);
   }
 
   $output .= '<p class="content-nav">'. implode(' | ', $links) .'</p>';

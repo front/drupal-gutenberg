@@ -22,16 +22,9 @@
 <?php $div_id = gutenberg_get_next_div_id(); ?>
               <div id="<?php print $div_id;?>">
                 <div id="<?php print $div_id;?>-inner" class="pkg">
-<?php if ($search_box): ?>
-                  <div class="module-search module">
-                    <h2 class="module-header">Search</h2>
-                    <div class="module-content">
-                      <?php print $search_box ?>
-                    </div>
-                  </div>
-<?php unset($search_box); ?>
-<?php endif; ?>
+<?php print theme('sidebar_open', $div_id, $search_box) ?>
 <?php print $sidebar_left ?>
+<?php print theme('sidebar_close', $div_id) ?>
                 </div>
               </div>
 <?php endif; ?>
@@ -39,14 +32,16 @@
 <?php $div_id = gutenberg_get_next_div_id(); ?>
               <div id="<?php print $div_id;?>">
                 <div id="<?php print $div_id;?>-inner" class="pkg">
-                  <?php if ($title): print '<h2 class="entry-header">'. $title .'</h2>'; endif; ?>
+                  <?php if ($title): print theme('page_title', $title); endif; ?>
                   <?php if ($help): print $help; endif; ?>
                   <?php if ($messages): print $messages; endif; ?>
 
                   <?php if ($tabs): print '<div id="tabs-wrapper" class="clear-block">'; endif; ?>
                   <?php if ($tabs): print $tabs .'</div>'; endif; ?>
                   <?php if (isset($tabs2)): print $tabs2; endif; ?>
+                  <?php print $header;?>
                   <?php print $content;?>
+                  <?php print $footer;?>
                 </div>
               </div>
 
@@ -54,15 +49,9 @@
 <?php $div_id = gutenberg_get_next_div_id(); ?>
               <div id="<?php print $div_id;?>">
                 <div id="<?php print $div_id;?>-inner" class="pkg">
-<?php if ($search_box): ?>
-                  <div class="module-search module">
-                    <h2 class="module-header">Search</h2>
-                    <div class="module-content">
-                      <?php print $search_box ?>
-                    </div>
-                  </div>
-<?php endif; ?>
+<?php print theme('sidebar_open', $div_id, $search_box) ?>
 <?php print $sidebar_right ?>
+<?php print theme('sidebar_close', $div_id) ?>
                 </div>
               </div>
 <?php endif; ?>
