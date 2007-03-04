@@ -231,22 +231,61 @@ function gutenberg_item_list($items = array(), $title = NULL, $type = 'ul', $att
 }
 
 /**
- * Wrap the display of comments in Movable Type's standard divs.
+ * Wrap the display of comments in Movable Type's standard divs. We also attempt
+ * to wrap the comment form properly when it's shown on a separate page -- a
+ * scenerio MT doesn't provide for. To prevent double-wrapping, we use the helper
+ * function _gutenberg_comments_wrapped and bail if we're already insie the wrapper.
  */
 function gutenberg_comment_wrapper($content, $type = null) {
   if ($content) {
-    $output .= '<div id="comments" class="comments">';
-    $output .= '<div class="comments-content">';
-    $output .= '<h3 class="comments-header">Comments</h3>';
-    $output .= $content;
-    $output .= '</div>';
-    $output .= '</div>';
+    if (_gutenberg_comments_wrapped()) {
+      $output = $content;
+    }
+    else {
+      $output .= '<div id="comments" class="comments">';
+      $output .= '<div class="comments-content">';
+      $output .= '<h3 class="comments-header">Comments</h3>';
+      $output .= $content;
+      $output .= '</div>';
+      $output .= '</div>';
+    }
   }
   return $output;
 }
 
+function gutenberg_comment_form($form) {
+  $content = drupal_render($form);
+  return theme('comment_wrapper', $content);
+}
+
+function _gutenberg_comments_wrapped() {
+  static $flag;
+  $wrapped = isset($flag);
+  $flag = TRUE;
+  return $wrapped;
+}
+/**
+ * Movable Type uses a smallish text blurb instead of a feed icon. We'll mirror that,
+ * so that CSS styles can do their usual thing with it.
+ */
 function gutenberg_feed_icon($url) {
   return '<a href="'. check_url($url) .'" class="feed-icon">'. t("Subscribe to this blog's feed") .'</a>';
+}
+
+/**
+ * Override Views module's standard summary display, so categories aren't polluted
+ * by summary counts that Movable Type doesn't normally generate. They mess up the
+ * occasional funkily-coded MT style.
+ */
+function gutenberg_views_summary($view, $type, $level, $nodes, $args) {
+  foreach ($nodes as $node) {
+    $items[] = views_get_summary_link($view->argument[$level]['type'], $node, $view->real_url);
+  }
+  if ($items) {
+    $output .= theme('item_list', $items);
+  }
+
+  return $output;
 }
 
 /**
