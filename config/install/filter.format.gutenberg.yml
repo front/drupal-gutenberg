@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Gutenberg Blocks'
+format: gutenberg
+weight: 0
+filters: {  }

@@ -1,0 +1,4 @@
+services:
+  plugin.manager.gutenberg.plugin:
+    class: Drupal\gutenberg\GutenbergPluginManager
+    parent: default_plugin_manager

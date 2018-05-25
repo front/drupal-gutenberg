@@ -1,0 +1,7 @@
+name: Gutenberg
+type: module
+description: "Smart editing for Drupal. Block-oriented."
+package: Frontkom
+core: 8.x
+dependencies:
+  - editor

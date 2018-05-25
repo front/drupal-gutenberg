@@ -1,0 +1,103 @@
+.edit-post-visual-editor {
+  border-left: 1px solid #e2e4e7;
+  border-right: 1px solid #e2e4e7;
+  border-bottom: 1px solid #e2e4e7;
+}
+
+body.toolbar-horizontal {
+  .edit-post-sidebar {
+    @media (min-width: 782px) {
+      top: 78px;
+    }
+  }
+
+  .edit-post-header {
+    @media (min-width: 782px) {
+      top: 78px;
+    }
+  }
+
+}
+
+body.toolbar-vertical {
+  .edit-post-sidebar {
+    @media (min-width: 782px) {
+      top: 39px !important;
+    }
+  }
+
+  .edit-post-header {
+    @media (min-width: 782px) {
+      top: 39px;
+    }
+  }
+}
+
+.edit-post-layout {
+  padding-top: 0px !important;
+
+  &.has-fixed-toolbar {
+    padding-top: 0px;
+  }
+
+  .edit-post-layout__content {
+    padding-bottom: 4px;
+    margin-bottom: -4px;
+  }
+
+  &.is-sidebar-opened {
+    // .edit-post-sidebar {
+    //   animation-name: sidebar-slidein;
+    //   animation-duration: 0.3s;
+    // }
+
+    .edit-post-layout__content {
+      @media (min-width: 782px) {
+        margin-right: 0px !important;
+      }
+    }
+  }
+}
+
+@keyframes sidebar-slidein {
+  from {
+    right: -280px
+  }
+
+  to {
+    right: 0px;
+  }
+}
+
+.edit-post-header {
+  position: sticky !important;
+  // top: 78px !important;
+
+  // .edit-post-header__settings {
+  //   .editor-post-saved-state {
+  //     display: none;
+  //   }
+
+  //   .editor-post-save-draft {
+  //     display: none;
+  //   }
+
+  //   .editor-post-publish-panel__toggle {
+  //     display: none;
+  //   }
+  // }
+}
+
+// .edit-post-sidebar {
+//   position: absolute !important;
+//   top: 76px;
+//   min-height: 400px;
+//   background: none !important;
+// }
+
+.edit-post-header:focus,
+.edit-post-sidebar:focus,
+.edit-post-layout *:focus {
+  outline: none;
+}
+

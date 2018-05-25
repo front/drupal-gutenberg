@@ -1,0 +1,17 @@
+.edit-post-sidebar {
+  background: #ececec !important;
+
+  .components-base-control {
+    padding-right: 16px;
+  }
+
+  .edit-post-sidebar-header {
+    background: #ececec !important;
+  }
+
+  .edit-post-sidebar__panel-tab {
+    &.is-active {
+      border-color: transparent !important;
+    }
+  }
+}

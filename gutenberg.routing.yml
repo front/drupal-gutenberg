@@ -1,0 +1,18 @@
+gutenberg.image.upload:
+  path: '/editor/image/upload/{editor}'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\ImageController::upload'
+  requirements:
+    _entity_access: 'editor.use'
+    _permission: 'access content'
+    _method: 'POST'
+gutenberg.image.load:
+  path: '/editor/image/load/{file}'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\ImageController::load'
+    parameters:
+      file:
+        type: entity:file
+  requirements:
+    _permission: 'access content'
+    _method: 'GET'

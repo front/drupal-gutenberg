@@ -1,0 +1,11 @@
+.editor-inserter__tabs {
+  .components-tab-panel__tabs {
+    background-color: #f7f7f7;
+  }
+}
+
+.editor-inserter__tab {
+  &.is-active {
+    border-color: #c0c0c0;
+  }
+}

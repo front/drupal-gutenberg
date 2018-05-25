@@ -1,0 +1,52 @@
+@import '../../node_modules/@frontkom/gutenberg/dist/css/blocks/style.css';
+@import '../../node_modules/@frontkom/gutenberg/dist/css/blocks/edit-blocks.css';
+@import '../../node_modules/@frontkom/gutenberg/dist/css/core-blocks/style.css';
+@import '../../node_modules/@frontkom/gutenberg/dist/css/core-blocks/edit-blocks.css';
+@import '../../node_modules/@frontkom/gutenberg/dist/css/style.css';
+
+@import 'edit-post';
+@import 'popup';
+@import 'tabs';
+@import 'sidebar';
+
+/* temp */
+body {
+  font-size: small !important;
+}
+
+/* *** */
+.layout-region-node-main {
+  transition: all 300ms ease;
+}
+
+// .layout-region-node-secondary {
+//   @media (min-width: 782px) {
+//     position: absolute;
+//     padding: 0px 32.5px 0px 28px;
+//     right: 0px;
+//   }
+//   opacity: 1;
+//   transition: all 300ms ease;
+// }
+
+// .layout-region-node-main {
+//   width: 100% !important;
+// }
+
+// .layout-node-form {
+//   & > .layout-region-node-secondary {
+//     display: none;
+//   }
+// }
+
+
+.gutenberg-sidedar-open {
+  .layout-region-node-secondary {
+    opacity: 0;
+  }
+
+  .layout-region-node-main {
+    width: 100%;
+    padding-right: 281px;
+  }
+}

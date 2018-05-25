@@ -1,0 +1,17 @@
+drupal.gutenberg:
+  version: 0.0.1
+  css:
+    base:
+      dist/css/main.css : {}
+  js:
+    dist/js/bundle.js: {}
+    dist/js/vendor.bundle.js : {}
+
+frontkom-gutenberg:
+  version: 0.0.10
+  css:
+    base:
+      dist/css/main.css : {}
+  js:
+    dist/js/vendor.bundle.js : {}
+    dist/js/main.bundle.js : {}

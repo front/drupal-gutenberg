@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.gutenberg
+  module:
+    - gutenberg
+format: gutenberg
+editor: gutenberg
+settings: {  }
+image_upload: {  }
