@@ -3,7 +3,9 @@ const requestPaths = {
     method: 'PUT',
     regex: /\/wp\/v2\/(\w*)\/(\d*)/g,
     process: (matches, data) => {
-      console.log(data);
+      // console.log(data);
+      // document.forms[0].submit();
+      // document.getElementById('node-article-edit-form').submit();
       return new Promise((resolve, reject) => {
         resolve({
           pathType: 'save-post',
@@ -87,13 +89,19 @@ const requestPaths = {
     process: () => {
       return new Promise((resolve, reject) => {
         return resolve({
+          labels: {
+            Document: Drupal.t('Node'),
+            document: Drupal.t('Node'),
+            posts: Drupal.t('Nodes'),
+            extras: Drupal.t('Fields') // extra tab label in sidebar
+          },
           id: 1,
           name: 'Node', rest_base: 'nodes', slug: 'node',
           supports: {
             author: false,
             comments: false, // hide discussion-panel
             'custom-fields': true,
-            document: false, // * hide document tab
+            document: true, // * hide document tab
             editor: true,
             'media-library': false, // * hide media library
             'page-attributes': false, // hide page-attributes panel
@@ -102,6 +110,7 @@ const requestPaths = {
             'template-settings': false, // * hide template-settings panel
             thumbnail: false, // featured-image panel
             title: false, // show title on editor
+            extras: true,
           },
           viewable: false,
           saveable: false,

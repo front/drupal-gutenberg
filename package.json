@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "@frontkom/gutenberg": "0.0.20",
+    "@frontkom/gutenberg": "0.0.21",
     "jquery-sticky": "github:garand/sticky",
     "tinymce": "^4.7.13",
     "url": "^0.11.0"
@@ -14,7 +14,7 @@
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.11",
-    "eslint": "^5.0.0-alpha.3",
+    "eslint": "^5.0.0-alpha.4",
     "eslint-config-standard": "^12.0.0-alpha.0",
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-node": "^6.0.1",
@@ -26,7 +26,7 @@
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
     "style-loader": "^0.21.0",
-    "webpack": "^4.8.3",
+    "webpack": "^4.10.2",
     "webpack-cli": "^2.1.4",
     "webpack-merge": "^4.1.2"
   },

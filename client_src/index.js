@@ -10,10 +10,17 @@ import './sass/index.scss';
   Drupal.editors.gutenberg = {
     attach: function attach(element, format) {
       initGutenberg(element).then(() => {
+        // On page load always select sidebar's document tab.
+        dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
+
+        $('.edit-post-header__settings').append($('.gutenberg-header-settings'));
+
+        $('.gutenberg-full-editor').addClass('ready');
+        $('#gutenberg-loading').addClass('hide');
 
         // Gutenberg is full of buttons which cause the form
         // to submit (no default prevent).
-        $('#node-article-edit-form').submit((e) => {
+        $(document.forms[0]).submit((e) => {
           const selectEditor = select('core/editor');
           const dispatchEditor = dispatch('core/editor');
 
@@ -67,7 +74,7 @@ import './sass/index.scss';
   function initGutenberg(element) {
     const $textArea = $(element);
     const id = 'editor-' + $textArea.data('drupal-selector');
-    const $editor = $('<div id="' + id + '"></div>');
+    const $editor = $('<div id="' + id + '" class="gutenberg__editor"></div>');
     $editor.insertAfter($textArea);
     $textArea.hide();
 
@@ -76,7 +83,8 @@ import './sass/index.scss';
       templates: '',
       title: { raw: document.title },
       type: 'node',
-      id: 1, // Doesn't really matters because we don't do AJAX saves.
+      status: 'auto-draft',
+      // id: 0, // Doesn't really matters because we don't do AJAX saves.
     }
 
     const editorSettings = { 
@@ -89,10 +97,22 @@ import './sass/index.scss';
     window.customGutenberg = {
       events: {
         'OPEN_GENERAL_SIDEBAR': function( action, store ) {
+          // Make sure node's "tabs" are in the original placeholder.
+          let $tab = $('.edit-post-sidebar .components-panel .tab');
+          $('.gutenberg-sidebar').append($tab);
+
+          // Should move tab only when sidebar is fully generated.
+          setTimeout(() => {
+            let tab = action.name.replace(/edit-post\//g, '');
+            $('.edit-post-sidebar .components-panel').append($('.gutenberg-sidebar .tab.' + tab));
+          }, 0);
+
           $(document.body).addClass('gutenberg-sidedar-open');
         },
         'CLOSE_GENERAL_SIDEBAR': function( action, store ) {
           $(document.body).removeClass('gutenberg-sidedar-open');
+          // Move tab before sidebar is "destroyed".
+          $('.gutenberg-sidebar').append($('.edit-post-sidebar .components-panel .tab'));
         },
       },
       categories: [
@@ -100,7 +120,7 @@ import './sass/index.scss';
         { slug: 'common', title: 'Common Blocks' },
         { slug: 'formatting', title: 'Formatting' },
         { slug: 'layout', title: 'Layout Elements' },
-        { slug: 'widgets', title: 'Widgets' },
+        // { slug: 'widgets', title: 'Widgets' },
         { slug: 'embed', title: 'Embeds' },
         { slug: 'shared', title: 'Shared Blocks' },
       ],
@@ -144,7 +164,7 @@ import './sass/index.scss';
     };
 
     return new Promise((resolve, reject) => {
-      // Wait for CKEditor to finish its things.
+      // Wait a tick for CKEditor(?) to finish its things.
       setTimeout(() => {
         initializeEditor( id, post, editorSettings );
         resolve();

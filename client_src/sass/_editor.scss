@@ -1,0 +1,52 @@
+#gutenberg-loading {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.hide {
+    display: none;
+  }
+}
+
+.gutenberg-full-editor {
+  &:not(.ready) {
+    display: none;
+  }
+}
+
+.layout-container {
+  &.full-width {
+    margin: 0px;
+  }
+}
+
+body .gutenberg {
+  position: relative;
+}
+
+body .gutenberg__editor {
+  position: absolute;
+  min-height: calc(100vh - 88px);
+}
+
+body .gutenberg__editor .edit-post-layout .edit-post-sidebar {
+  font-family: inherit;
+}
+
+.field--gutenberg {
+  .form-item {
+    & + label {
+      display: none;
+    }
+  }
+
+  .filter-wrapper {
+    display: none;
+  }
+}

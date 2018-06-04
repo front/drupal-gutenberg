@@ -66,10 +66,16 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new ExtractTextPlugin('css/main.css'),
-    new CopyWebpackPlugin([ {
-      from : 'node_modules/tinymce/plugins/',
-      to: 'js/plugins/'
-    } ])      
+    new CopyWebpackPlugin([
+      {
+        from : 'node_modules/tinymce/plugins/',
+        to: 'js/plugins/'
+      },
+      {
+        from : 'node_modules/tinymce/themes/',
+        to: 'js/themes/'
+      } 
+    ])      
   ],
   optimization: {
     splitChunks: {
