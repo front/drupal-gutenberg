@@ -7,5 +7,15 @@ dependencies:
     - gutenberg
 format: gutenberg
 editor: gutenberg
-settings: {  }
-image_upload: {  }
+settings:
+  plugin_settings:
+    editor__settings__plugin_settings__active_tab: edit-editor-settings-plugins-drupalimage
+  plugins: {  }
+image_upload:
+  status: true
+  scheme: public
+  directory: inline-images
+  max_size: ''
+  max_dimensions:
+    width: null
+    height: null
