@@ -83,6 +83,42 @@ const requestPaths = {
       });
     }
   },
+  'categories': {
+    method: 'GET',
+    regex: /\/wp\/v2\/categories\?(.*)/g,
+    process: (matches, data) => {
+      return new Promise((resolve, reject) => {
+        resolve('ok');
+      });
+    }
+  },
+  'users': {
+    method: 'GET',
+    regex: /\/wp\/v2\/users\/\?(.*)/g,
+    process: (matches, data) => {
+      return new Promise((resolve, reject) => {
+        resolve('ok');
+      });
+    }
+  },
+  'taxonomies': {
+    method: 'GET',
+    regex: /\/wp\/v2\/taxonomies\?(.*)/g,
+    process: (matches, data) => {
+      return new Promise((resolve, reject) => {
+        resolve('ok');
+      });
+    }
+  },
+  'root': {
+    method: 'GET',
+    regex: /^\/$/g,
+    process: (matches, data) => {
+      return new Promise((resolve, reject) => {
+        resolve('ok');
+      });
+    }
+  },
   'default': {
     method: 'GET',
     regex: /\/wp\/v2\/types\/node/g,
@@ -114,7 +150,8 @@ const requestPaths = {
           },
           viewable: false,
           saveable: false,
-          publishable: false
+          publishable: false,
+          autosaveable: false
         });
       });       
     }

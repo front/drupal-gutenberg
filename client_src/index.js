@@ -97,14 +97,16 @@ import './sass/index.scss';
     window.customGutenberg = {
       events: {
         'OPEN_GENERAL_SIDEBAR': function( action, store ) {
+          let tab = action.name.replace(/edit-post\//g, '');
+
           // Make sure node's "tabs" are in the original placeholder.
-          let $tab = $('.edit-post-sidebar .components-panel .tab');
-          $('.gutenberg-sidebar').append($tab);
+          let $tabG = $('.edit-post-sidebar .components-panel .tab');
+          $('.gutenberg-sidebar').append($tabG);
 
           // Should move tab only when sidebar is fully generated.
-          setTimeout(() => {
-            let tab = action.name.replace(/edit-post\//g, '');
-            $('.edit-post-sidebar .components-panel').append($('.gutenberg-sidebar .tab.' + tab));
+          setTimeout(() => {  
+            let $tabD = $('.gutenberg-sidebar .tab.' + tab);
+            $('.edit-post-sidebar .components-panel').append($tabD);
           }, 0);
 
           $(document.body).addClass('gutenberg-sidedar-open');

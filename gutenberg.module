@@ -12,7 +12,6 @@ use Drupal\Core\Entity\EntityFormBuilder;
  * Implements hook_form_alter().
  */
 function gutenberg_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // dsm($form);
   if ($form_id == 'node_type_edit_form') {
     $config = \Drupal::service('config.factory')->getEditable('gutenberg.settings');
 
@@ -137,6 +136,26 @@ function gutenberg_form_node_form_after_build(array $element, FormStateInterface
 function _gutenberg_node_form_submit(array $form, FormStateInterface $form_state) {
   $config = \Drupal::service('config.factory')->getEditable('gutenberg.settings');
   $config->set($form_state->getValue('type') . '_enable_full', $form_state->getValue('enable_gutenberg_experience'))->save();
+}
+
+/**
+ * Implements template_preprocess_field().
+ */
+function gutenberg_preprocess_node(&$variables) {
+  $config = \Drupal::service('config.factory')->getEditable('gutenberg.settings');
+  $node = $variables['elements']['#node'];
+  $node_type = $node->type->getString();
+
+  $gutenberg_enabled = $config->get($node_type . '_enable_full');
+
+  if ($gutenberg_enabled) {
+    $variables['#attached']['library'][] = 'gutenberg/frontkom-gutenberg-frontend';
+  }
+
+  // if($variables['element']['#field_type'] === 'text_with_summary') {
+  //   $element = $variables['element'];
+  //   dsm($element);
+  // }
 }
 
 /**

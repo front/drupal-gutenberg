@@ -212,7 +212,7 @@ class Gutenberg extends EditorBase implements ContainerFactoryPluginInterface {
    */
   public function getLibraries(Editor $editor) {
     $libraries = [
-      'gutenberg/frontkom-gutenberg',
+      'gutenberg/frontkom-gutenberg-editor',
     ];
   
     return $libraries;

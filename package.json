@@ -1,11 +1,10 @@
 {
   "name": "gutenberg-drupal",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "@frontkom/gutenberg": "0.0.21",
-    "jquery-sticky": "github:garand/sticky",
+    "@frontkom/gutenberg": "0.1.0",
     "tinymce": "^4.7.13",
     "url": "^0.11.0"
   },
@@ -24,10 +23,10 @@
     "lerna": "^2.11.0",
     "mini-css-extract-plugin": "^0.4.0",
     "node-sass": "^4.9.0",
-    "sass-loader": "^7.0.1",
+    "sass-loader": "^7.0.3",
     "style-loader": "^0.21.0",
-    "webpack": "^4.10.2",
-    "webpack-cli": "^2.1.4",
+    "webpack": "^4.11.1",
+    "webpack-cli": "^2.1.5",
     "webpack-merge": "^4.1.2"
   },
   "scripts": {
