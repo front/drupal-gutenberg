@@ -1,28 +1,54 @@
+/* eslint-disable import/first */
 import './wp-init';
-import { initializeEditor, select, dispatch } from '@frontkom/gutenberg';
+// import { initializeEditor, select, dispatch } from '@frontkom/gutenberg';
+import { editPost, plugins, components, data } from '@frontkom/gutenberg';
 
 import './sass/index.scss';
 
-(($, Drupal, drupalSettings, _) => {
-  let editor;
-  let fields = [];
+let el, PanelBody, PluginSidebar;
 
+(($, Drupal, wp) => {
   Drupal.editors.gutenberg = {
-    attach: function attach(element, format) {
+    attach(element) {
+      function MoreFieldsPluginSidebar() {
+        return el(
+          PluginSidebar,
+          {
+            name: 'more-fields',
+            title: 'More fields',
+            icon: 'forms',
+            isPinnable: true,
+          },
+          el(
+            PanelBody,
+            {},
+            'My sidebar content'
+          )
+        );
+      }
+      
       initGutenberg(element).then(() => {
         // On page load always select sidebar's document tab.
-        dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
+        data.dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
 
-        $('.edit-post-header__settings').append($('.gutenberg-header-settings'));
+        el = wp.element.createElement;
+        PanelBody = components.PanelBody;
+        PluginSidebar = editPost.PluginSidebar;
+
+        plugins.registerPlugin('drupal', {icon: 'smiley', render: MoreFieldsPluginSidebar});
+
+        setTimeout(() => {
+          $('.edit-post-header__settings').append($('.gutenberg-header-settings'));
+        }, 0);
 
         $('.gutenberg-full-editor').addClass('ready');
         $('#gutenberg-loading').addClass('hide');
 
         // Gutenberg is full of buttons which cause the form
         // to submit (no default prevent).
-        $(document.forms[0]).submit((e) => {
-          const selectEditor = select('core/editor');
-          const dispatchEditor = dispatch('core/editor');
+        $(document.forms[0]).submit(e => {
+          const selectEditor = data.select('core/editor');
+          const dispatchEditor = data.dispatch('core/editor');
 
           dispatchEditor.savePost();
           $(element).val(selectEditor.getEditedPostContent());
@@ -48,12 +74,12 @@ import './sass/index.scss';
 
     // Editor detaching happens when changing editors and
     // when saving the node.
-    detach: function detach(element, format, trigger) {
+    detach(element, format, trigger) {
       const $textArea = $(element);
       const id = 'editor-' + $textArea.data('drupal-selector');
 
       // Update fields content with editor content.
-      const content = select('core/editor').getEditedPostContent();
+      const content = data.select('core/editor').getEditedPostContent();
       $textArea.val(content);
 
       // Isn't serializing (node save)? Remove the editor.
@@ -62,7 +88,7 @@ import './sass/index.scss';
       }
     },
 
-    onChange: function onChange(element, callback) {
+    onChange() { // element, callback
     }
   };
 
@@ -70,51 +96,66 @@ import './sass/index.scss';
    * Initializes Gutenberg editor.
    * 
    * @param {DOMElement} element Target DOM element, probably a textarea.
+   * @returns {Promise}
    */
   function initGutenberg(element) {
     const $textArea = $(element);
-    const id = 'editor-' + $textArea.data('drupal-selector');
-    const $editor = $('<div id="' + id + '" class="gutenberg__editor"></div>');
+    const target = 'editor-' + $textArea.data('drupal-selector');
+    const $editor = $('<div id="' + target + '" class="gutenberg__editor"></div>');
     $editor.insertAfter($textArea);
     $textArea.hide();
 
-    const post = { 
+    wp.node = {
       content: { raw: $(element).val() },
       templates: '',
       title: { raw: document.title },
-      type: 'node',
+      type: 'page',
       status: 'auto-draft',
-      // id: 0, // Doesn't really matters because we don't do AJAX saves.
-    }
+      id: 12345, // Doesn't really matters because we don't do "AJAX" saves.
+    };
 
     const editorSettings = { 
-      alignWide: false,
+      alignWide: true,
       availableTemplates: [],
-      disableCustomColors: false,
-      titlePlaceholder: 'Add a title here...',
+      allowedBlockTypes: true, 
+      disableCustomColors: false, 
+      disablePostFormats: false,
+      titlePlaceholder: Drupal.t('Add title'),
+      bodyPlaceholder: Drupal.t('Write your story'),
+      isRTL: false,
+      autosaveInterval: 100,
+      // alignWide: false,
+      // availableTemplates: [],
+      // disableCustomColors: false,
+      // titlePlaceholder: 'Add a title here...',
     };
 
     window.customGutenberg = {
       events: {
-        'OPEN_GENERAL_SIDEBAR': function( action, store ) {
+        'OPEN_GENERAL_SIDEBAR': action => {
+          console.log('OPEN_GENERAL_SIDEBAR', action);
           let tab = action.name.replace(/edit-post\//g, '');
+          tab = tab.replace(/drupal\//g, '');
 
           // Make sure node's "tabs" are in the original placeholder.
           let $tabG = $('.edit-post-sidebar .components-panel .tab');
           $('.gutenberg-sidebar').append($tabG);
 
           // Should move tab only when sidebar is fully generated.
-          setTimeout(() => {  
+          setTimeout(() => {
             let $tabD = $('.gutenberg-sidebar .tab.' + tab);
             $('.edit-post-sidebar .components-panel').append($tabD);
           }, 0);
 
           $(document.body).addClass('gutenberg-sidedar-open');
         },
-        'CLOSE_GENERAL_SIDEBAR': function( action, store ) {
+        'CLOSE_GENERAL_SIDEBAR': () => {
           $(document.body).removeClass('gutenberg-sidedar-open');
           // Move tab before sidebar is "destroyed".
           $('.gutenberg-sidebar').append($('.edit-post-sidebar .components-panel .tab'));
+        },
+        'REMOVE_BLOCKS': (action, store) => {
+          console.log('REMOVE_BLOCKS', action, store);
         },
       },
       categories: [
@@ -143,7 +184,7 @@ import './sass/index.scss';
           },
           tabScrollTop: 0,
           getItemsForTab() {
-            return ( item ) => item.category !== 'embed' && item.category !== 'shared' && item.category !== 'rows';
+            return item => item.category !== 'embed' && item.category !== 'shared' && item.category !== 'rows';
           },
         },
         {
@@ -154,7 +195,7 @@ import './sass/index.scss';
           },
           tabScrollTop: 0,
           getItemsForTab() {
-            return ( item ) => item.category === 'rows';
+            return item => item.category === 'rows';
           },
         },
       ],
@@ -165,12 +206,12 @@ import './sass/index.scss';
       },
     };
 
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       // Wait a tick for CKEditor(?) to finish its things.
       setTimeout(() => {
-        initializeEditor( id, post, editorSettings );
+        editPost.initializeEditor( target, 'page', 12345, editorSettings, {} );
         resolve();
       }, 0);
     });
   }
-})(jQuery, Drupal, drupalSettings, _);
+})(jQuery, Drupal, wp, drupalSettings, _);
