@@ -1,12 +1,40 @@
+const types = {
+  'page': {
+    labels: {
+      Document: Drupal.t('Node'),
+      document: Drupal.t('Node'),
+      posts: Drupal.t('Nodes'),
+      extras: Drupal.t('Fields') // extra tab label in sidebar
+    },
+    name: 'Page', rest_base: 'pages', slug: 'page',
+    supports: {
+      author: false,
+      comments: false, // hide discussion-panel
+      'custom-fields': true,
+      document: true, // * hide document tab
+      editor: true,
+      'media-library': false, // * hide media library
+      'page-attributes': false, // hide page-attributes panel
+      posts: false, // * hide posts-panel
+      revisions: false,
+      'template-settings': false, // * hide template-settings panel
+      thumbnail: false, // featured-image panel
+      title: false, // show title on editor
+      extras: true,
+    },
+    viewable: false,
+    saveable: false,
+    publishable: false,
+    autosaveable: false
+  }
+};
+
 const requestPaths = {
   'save-post': {
     method: 'PUT',
     regex: /\/wp\/v2\/(\w*)\/(\d*)/g,
     process: (matches, data) => {
-      // console.log(data);
-      // document.forms[0].submit();
-      // document.getElementById('node-article-edit-form').submit();
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         resolve({
           pathType: 'save-post',
           id: matches[2],
@@ -21,10 +49,19 @@ const requestPaths = {
       });
     }
   },
+  'load-node': {
+    method: 'GET',
+    regex: /\/wp\/v2\/pages\/(\d*)/g,
+    process: () => {
+      return new Promise(resolve => {
+        resolve(wp.node);
+      });
+    }
+  },
   'load-media': {
     method: 'GET',
     regex: /\/wp\/v2\/media\/(\d*)/g,
-    process: (matches, data) => {
+    process: matches => {
       return new Promise((resolve, reject) => {
         jQuery.ajax({
           method: 'GET',
@@ -74,7 +111,7 @@ const requestPaths = {
             json: 'application/json, text/javascript, */*; q=0.01'
           },
         })
-        .done((result) => {
+        .done(result => {
           resolve(result);
         })
         .fail(() => {
@@ -86,8 +123,8 @@ const requestPaths = {
   'categories': {
     method: 'GET',
     regex: /\/wp\/v2\/categories\?(.*)/g,
-    process: (matches, data) => {
-      return new Promise((resolve, reject) => {
+    process: () => { // (matches, data)
+      return new Promise(resolve => {
         resolve('ok');
       });
     }
@@ -95,8 +132,8 @@ const requestPaths = {
   'users': {
     method: 'GET',
     regex: /\/wp\/v2\/users\/\?(.*)/g,
-    process: (matches, data) => {
-      return new Promise((resolve, reject) => {
+    process: () => { // (matches, data)
+      return new Promise(resolve => {
         resolve('ok');
       });
     }
@@ -104,55 +141,65 @@ const requestPaths = {
   'taxonomies': {
     method: 'GET',
     regex: /\/wp\/v2\/taxonomies\?(.*)/g,
-    process: (matches, data) => {
-      return new Promise((resolve, reject) => {
+    process: () => { // (matches, data)
+      return new Promise(resolve => {
         resolve('ok');
+      });
+    }
+  },
+  'embed': {
+    method: 'GET',
+    regex: /\/oembed\/1\.0\/proxy\?(.*)/g,
+    process: matches => { // (matches, data)
+      return new Promise((resolve, reject) => {
+        jQuery.ajax({
+          method: 'GET',
+          url: `http://open.iframe.ly/api/oembed?${matches[1]}&origin=drupal`,
+          processData: false,
+          contentType: false,
+          accepts: {
+            json: 'application/json, text/javascript, */*; q=0.01'
+          },
+        })
+        .done(result => {
+          resolve(result);
+        })
+        .fail(() => {
+          reject('Error');
+        });
+
       });
     }
   },
   'root': {
     method: 'GET',
     regex: /^\/$/g,
-    process: (matches, data) => {
-      return new Promise((resolve, reject) => {
-        resolve('ok');
+    process: () => { // (matches, data)
+      return new Promise(resolve => {
+        return resolve({
+          theme_supports: {
+            formats: [ 'standard', 'aside', 'image', 'video', 'quote', 'link', 'gallery', 'audio' ],
+            'post-thumbnails': true,
+          },
+        });
       });
     }
   },
-  'default': {
+  'load-type-page': {
     method: 'GET',
-    regex: /\/wp\/v2\/types\/node/g,
+    regex: /\/wp\/v2\/types\/page/g,
     process: () => {
-      return new Promise((resolve, reject) => {
-        return resolve({
-          labels: {
-            Document: Drupal.t('Node'),
-            document: Drupal.t('Node'),
-            posts: Drupal.t('Nodes'),
-            extras: Drupal.t('Fields') // extra tab label in sidebar
-          },
-          id: 1,
-          name: 'Node', rest_base: 'nodes', slug: 'node',
-          supports: {
-            author: false,
-            comments: false, // hide discussion-panel
-            'custom-fields': true,
-            document: true, // * hide document tab
-            editor: true,
-            'media-library': false, // * hide media library
-            'page-attributes': false, // hide page-attributes panel
-            posts: false, // * hide posts-panel
-            revisions: false,
-            'template-settings': false, // * hide template-settings panel
-            thumbnail: false, // featured-image panel
-            title: false, // show title on editor
-            extras: true,
-          },
-          viewable: false,
-          saveable: false,
-          publishable: false,
-          autosaveable: false
-        });
+      return new Promise(resolve => {
+        return resolve(types.page);
+      });       
+    }
+  },
+  'load-types': {
+    method: 'GET',
+    regex: /\/wp\/v2\/types/g,
+    process: () => {
+      return new Promise(resolve => {
+        return resolve(types);
       });       
     }
   }
@@ -184,6 +231,7 @@ function processPath(options) {
   });
 }
 
-export default function apiRequest (options) {
+export default function apiRequest(options) {
+  console.log(options);
   return processPath(options);
 }
