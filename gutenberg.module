@@ -91,7 +91,7 @@ function gutenberg_form_node_form_alter(&$form, FormStateInterface $form_state) 
   // Let's move the remaining fields to a "special"
   // form group that can be used lated by JS to move to
   // Gutenberg's sidebar.
-  $form['extra'] = array(
+  $form['additional_fields'] = array(
     '#type' => 'container',
     '#access' => TRUE,
     '#title' => t('Additional Fields'),
@@ -120,7 +120,7 @@ function gutenberg_form_node_form_alter(&$form, FormStateInterface $form_state) 
       && $value !== $text_fields[0]
       && !in_array($value, $excluded_fields)
     ){
-      $form[$value]['#group'] = 'extra';
+      $form[$value]['#group'] = 'additional_fields';
     }
   }
 }

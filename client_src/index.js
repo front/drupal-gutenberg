@@ -10,19 +10,19 @@ let el, PanelBody, PluginSidebar;
 (($, Drupal, wp) => {
   Drupal.editors.gutenberg = {
     attach(element) {
-      function MoreFieldsPluginSidebar() {
+      function AdditionalFieldsPluginSidebar() {
         return el(
           PluginSidebar,
           {
-            name: 'more-fields',
-            title: 'More fields',
+            name: 'additional-fields',
+            title: 'Additional fields',
             icon: 'forms',
             isPinnable: true,
           },
           el(
             PanelBody,
             {},
-            'My sidebar content'
+            ''
           )
         );
       }
@@ -35,7 +35,7 @@ let el, PanelBody, PluginSidebar;
         PanelBody = components.PanelBody;
         PluginSidebar = editPost.PluginSidebar;
 
-        plugins.registerPlugin('drupal', {icon: 'smiley', render: MoreFieldsPluginSidebar});
+        plugins.registerPlugin('drupal', {icon: 'forms', render: AdditionalFieldsPluginSidebar});
 
         setTimeout(() => {
           $('.edit-post-header__settings').append($('.gutenberg-header-settings'));
@@ -121,7 +121,7 @@ let el, PanelBody, PluginSidebar;
       disableCustomColors: false, 
       disablePostFormats: false,
       titlePlaceholder: Drupal.t('Add title'),
-      bodyPlaceholder: Drupal.t('Write your story'),
+      bodyPlaceholder: Drupal.t('Add content'),
       isRTL: false,
       autosaveInterval: 100,
       // alignWide: false,

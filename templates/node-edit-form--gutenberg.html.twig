@@ -31,14 +31,14 @@
       {{ form.title }}
       {{ form.advanced }}
     </div>
-    <div class="tab extras" data-tab="extras">
-      {{ form.extra }}
+    <div class="tab additional-fields" data-tab="additional-fields">
+      {{ form.additional_fields }}
     </div>
   </div>
   <div class="gutenberg-header-settings">
     {{ form.actions}}
   </div>
   <div class="gutenberg">
-    {{ form|without('advanced', 'footer', 'actions', 'title', 'extra') }}
+    {{ form|without('advanced', 'footer', 'actions', 'title', 'additional_fields') }}
   </div>
 </div>
