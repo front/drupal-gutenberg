@@ -9,6 +9,9 @@
       "node": true,
       "es6": true
     },
+    "globals": {
+      "wp": true
+    },
     "extends": "eslint:recommended",
     "rules": {
       "no-console": "off",
