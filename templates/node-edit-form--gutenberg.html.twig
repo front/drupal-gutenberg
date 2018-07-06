@@ -28,8 +28,10 @@
 <div class="clearfix">
   <div class="gutenberg-sidebar">
     <div class="tab document" data-tab="document">
-      {{ form.title }}
-      {{ form.advanced }}
+      <div class="components-panel__body is-opened">
+        {{ form.title }}
+        {{ form.advanced }}
+      </div>
     </div>
     <div class="tab additional-fields" data-tab="additional-fields">
       {{ form.additional_fields }}

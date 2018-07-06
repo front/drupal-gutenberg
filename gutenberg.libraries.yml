@@ -1,5 +1,5 @@
 frontkom-gutenberg-editor:
-  version: 0.0.22
+  version: 0.2.1
   css:
     base:
       dist/css/core-blocks/style.css : {}
@@ -12,7 +12,7 @@ frontkom-gutenberg-editor:
     dist/js/vendor.bundle.js : {}
 
 frontkom-gutenberg-frontend:
-  version: 0.0.22
+  version: 0.2.1
   css:
     base:
       dist/css/core-blocks/style.css : {}

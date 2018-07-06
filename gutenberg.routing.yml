@@ -16,3 +16,10 @@ gutenberg.image.load:
   requirements:
     _permission: 'access content'
     _method: 'GET'
+gutenberg.embed.get:
+  path: '/embed/get'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\EmbedController::get'
+  requirements:
+    _permission: 'access content'
+    _method: 'GET'

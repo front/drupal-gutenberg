@@ -30,6 +30,10 @@
     display: none;
   }
 
+  details.form-wrapper {
+    margin-bottom: 0px !important;
+  }
+
   [class^="field--"] {
     .form-item {
       padding: 10px;

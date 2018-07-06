@@ -7,6 +7,7 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityFormBuilder;
+use Drupal\gutenberg\Render\Element;
 
 /**
  * Implements hook_form_alter().
@@ -65,6 +66,12 @@ function gutenberg_form_node_form_alter(&$form, FormStateInterface $form_state) 
     }
   }
 
+  // foreach ($field_names as $key => $value) {
+  //   if (isset($form[$value]) && isset($form[$value]['widget'])) {
+  //     $form[$value]['widget']['#theme'] .= '__gutenberg';
+  //   }
+  // }
+
   // No point going forward when no text fields on the form.
   if (count($text_fields) === 0) {
     return;
@@ -88,8 +95,22 @@ function gutenberg_form_node_form_alter(&$form, FormStateInterface $form_state) 
     }
   }
 
+  // Let's "import" Seven admin theme changes on node edit form.
+  $form['#theme'] = ['node_edit_form'];
+  $form['#attached']['library'][] = 'seven/node-form';
+
+  $form['advanced']['#type'] = 'container';
+  $form['meta']['#type'] = 'container';
+  $form['meta']['#access'] = TRUE;
+  $form['meta']['changed']['#wrapper_attributes']['class'][] = 'container-inline';
+  $form['meta']['author']['#wrapper_attributes']['class'][] = 'container-inline';
+
+  $form['revision_information']['#type'] = 'container';
+  $form['revision_information']['#group'] = 'meta';
+  // <-- Seven theme changes
+
   // Let's move the remaining fields to a "special"
-  // form group that can be used lated by JS to move to
+  // form group that can be used later by JS to move to
   // Gutenberg's sidebar.
   $form['additional_fields'] = array(
     '#type' => 'container',
@@ -122,7 +143,27 @@ function gutenberg_form_node_form_alter(&$form, FormStateInterface $form_state) 
     ){
       $form[$value]['#group'] = 'additional_fields';
     }
+
+    // if (array_key_exists($value, $form)) {
+    //   var_dump($form[$value]['#type']);
+    // }
   }
+
+  $form['test'] = array(
+    // '#type' => 'textfield',
+    '#type' => 'textfield_gutenberg',
+    '#title' => t('Test'),
+    '#default_value' => 'Placeholder...',
+    '#group' => 'additional_fields',
+    '#theme' => 'input__textfield__gutenberg',
+  );
+
+  $form['test2'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Test 2'),
+    '#default_value' => 'Placeholder 2...',
+    '#group' => 'additional_fields',
+  );
 }
 
 /**
@@ -151,17 +192,26 @@ function gutenberg_preprocess_node(&$variables) {
   if ($gutenberg_enabled) {
     $variables['#attached']['library'][] = 'gutenberg/frontkom-gutenberg-frontend';
   }
-
-  // if($variables['element']['#field_type'] === 'text_with_summary') {
-  //   $element = $variables['element'];
-  //   dsm($element);
-  // }
 }
+
+function gutenberg_preprocess_input(&$variables) {
+  $element =& $variables['element'];
+
+  $variables['directory'] = 'modules/gutenberg';
+  $element['element']['#theme'] = 'input__textfield__gutenberg';
+  $element['element']['#value_callback'] = 'Drupal\\gutenberg\\Render\\Element\\TextfieldGutenberg';
+  var_dump($variables);
+}
+
+// function gutenberg_preprocess_form_element(&$variables) {
+//   $variables['element']['#theme'] = 'input__textfield__gutenberg';
+//   var_dump($variables['element']['#theme']);
+// }
 
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function gutenberg_theme_suggestions_node_edit_form_alter(array &$suggestions, array $variables) {
+function gutenberg_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
   $config = \Drupal::service('config.factory')->getEditable('gutenberg.settings');
   $node = \Drupal::routeMatch()->getParameter('node');
 
@@ -179,42 +229,46 @@ function gutenberg_theme_suggestions_node_edit_form_alter(array &$suggestions, a
   $gutenberg_enabled = $config->get($node_type . '_enable_full');
 
   if ($gutenberg_enabled) {
-    $suggestions = ['node_edit_form__gutenberg'];
-  }
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK_alter().
- */
-function gutenberg_theme_suggestions_page_alter(array &$suggestions, array $variables) {
-  if (!in_array('page__node__edit', $suggestions)
-      && !in_array('page__node__add', $suggestions)) {
-    return;
-  }
-
-  $config = \Drupal::service('config.factory')->getEditable('gutenberg.settings');
-  $node = \Drupal::routeMatch()->getParameter('node');
-
-  if (!$node) {
-    $route_match = \Drupal::service('current_route_match');
-    if (!$route_match->getParameter('node_type')) {
-      return;
-    }
-    $node_type = $route_match->getParameter('node_type')->get('type');
-  }
-  else {
-    $node_type = $node->type->getString();
-  }
-
-  $gutenberg_enabled = $config->get($node_type . '_enable_full');
-
-  if ($gutenberg_enabled) {
-    if (in_array('page__node__edit', $suggestions)) {
-      $suggestions = ['page__node__edit__gutenberg'];
+    if ($hook === 'page') {
+      if (in_array('page__node__edit', $suggestions)) {
+        $suggestions = ['page__node__edit__gutenberg'];
+      }
+  
+      if (in_array('page__node__add', $suggestions)) {
+        $suggestions = ['page__node__add__gutenberg'];
+      }
     }
 
-    if (in_array('page__node__add', $suggestions)) {
-      $suggestions = ['page__node__add__gutenberg'];
+    if ($hook === 'node_edit_form') {
+      $suggestions = ['node_edit_form__gutenberg'];
+    }
+
+    if ($hook === 'container') {
+      $suggestions = ['container__gutenberg'];
+    }
+
+    if ($hook === 'input') {
+      $suggestions = ['input__gutenberg'];
+      if ($variables['theme_hook_original'] === 'input__textfield') {
+        $suggestions[] = 'input__textfield__gutenberg';
+      }
+      // $suggestions = ['input__textfield__gutenberg'];
+    }
+
+    if ($hook === 'form_control') {
+      $suggestions = ['form_control__gutenberg'];
+    }
+
+    if ($hook === 'form_element') {
+      $suggestions = ['form_element__gutenberg'];
+    }
+
+    if ($hook === 'form_element_label') {
+      $suggestions = ['form_element_label__gutenberg'];
+    }
+
+    if ($hook === 'field_multiple_value_form') {
+      $suggestions = ['field_multiple_value_form__gutenberg'];
     }
   }
 }
@@ -223,15 +277,57 @@ function gutenberg_theme_suggestions_page_alter(array &$suggestions, array $vari
  * Implements hook_theme().
  */
 function gutenberg_theme() {
+  $module_handler = \Drupal::service('module_handler');
+  $path = $module_handler->getModule('gutenberg')->getPath();
+
   return array(
     'page__node__edit__gutenberg' => array(
       'template' => 'page--node--edit--gutenberg',
+      'path' => $path . '/templates',
     ),
     'page__node__add__gutenberg' => array(
       'template' => 'page--node--add--gutenberg',
+      'path' => $path . '/templates',
     ),
     'node_edit_form__gutenberg' => array(
       'template' => 'node-edit-form--gutenberg',
-    )
+      'path' => $path . '/templates',
+    ),
+    'details__gutenberg' => array(
+      'template' => 'details--gutenberg',
+      'path' => $path . '/templates',
+      'base hook' => 'details'
+    ),
+    'container__gutenberg' => array(
+      'template' => 'container--gutenberg',
+      'path' => $path . '/templates',
+      'base hook' => 'container'
+    ),
+    'input__gutenberg' => array(
+      'template' => 'input--gutenberg',
+      'path' => $path . '/templates',
+      'base hook' => 'input'
+    ),
+    'input__textfield__gutenberg' => array(
+      'template' => 'input--textfield--gutenberg',
+      'path' => $path . '/templates',
+      'base hook' => 'input__textfield'
+    ),
+    'form_element__gutenberg' => array(
+      'template' => 'form-element--gutenberg',
+      'path' => $path . '/templates',
+      'base hook' => 'form_element'
+    ),
+    'form_element_label__gutenberg' => array(
+      'template' => 'form-element-label--gutenberg',
+      'path' => $path . '/templates',
+      'base hook' => 'form_element_label'
+    ),
+    'form_control__gutenberg' => array(
+      'template' => 'form-control--gutenberg',
+      'path' => $path . '/templates',
+      'base hook' => 'form_control'
+    ),
+
   );
 }

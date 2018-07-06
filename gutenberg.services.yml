@@ -2,3 +2,9 @@ services:
   plugin.manager.gutenberg.plugin:
     class: Drupal\gutenberg\GutenbergPluginManager
     parent: default_plugin_manager
+  theme.negotiator.gutenberg:
+    class: Drupal\gutenberg\Theme\ThemeNegotiator
+    arguments: []
+    # arguments: ['@current_user', '@config.factory', '@entity.manager', '@router.admin_context']
+    tags:
+      - { name: theme_negotiator, priority: -40 }

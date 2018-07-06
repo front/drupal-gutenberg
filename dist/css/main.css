@@ -1,3 +1,10 @@
+.region-highlighted {
+  position: fixed;
+  width: 50%;
+  z-index: 91;
+  right: 20px;
+  top: 77px; }
+
 #gutenberg-loading {
   position: absolute;
   left: 0;
@@ -9,22 +16,22 @@
   justify-content: center; }
   #gutenberg-loading.hide {
     display: none; }
+  #gutenberg-loading .loading-message {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px; }
 
 .gutenberg-full-editor:not(.ready) {
   display: none; }
 
-.layout-container.full-width {
-  margin: 0px; }
-
-body .gutenberg {
-  position: relative; }
-
-body .gutenberg__editor {
-  position: absolute;
-  min-height: calc(100vh - 88px); }
-
 body .gutenberg__editor .edit-post-layout .edit-post-sidebar {
-  font-family: inherit; }
+  font-family: "Source Sans Pro", "Lucida Grande", Verdana, sans-serif; }
+
+body .gutenberg__editor .edit-post-header {
+  font-family: "Source Sans Pro", "Lucida Grande", Verdana, sans-serif; }
+
+body .gutenberg__editor .components-popover {
+  font-family: "Source Sans Pro", "Lucida Grande", Verdana, sans-serif; }
 
 .field--gutenberg .form-item + label {
   display: none; }
@@ -33,11 +40,11 @@ body .gutenberg__editor .edit-post-layout .edit-post-sidebar {
   display: none; }
 
 body .gutenberg__editor .edit-post-layout .components-popover {
-  font-family: inherit; }
+  font-family: "Source Sans Pro", "Lucida Grande", Verdana, sans-serif; }
 
 body .gutenberg__editor .edit-post-layout .edit-post-header {
   position: fixed;
-  font-family: inherit; }
+  font-family: "Source Sans Pro", "Lucida Grande", Verdana, sans-serif; }
 
 @media (min-width: 782px) {
   body.toolbar-horizontal .edit-post-sidebar {
@@ -82,6 +89,8 @@ body .gutenberg__editor .edit-post-layout .edit-post-header {
       background-color: #ffffff; }
   .edit-post-sidebar .edit-post-post-status {
     display: none; }
+  .edit-post-sidebar details.form-wrapper {
+    margin-bottom: 0px !important; }
   .edit-post-sidebar [class^="field--"] .form-item {
     padding: 10px; }
   .edit-post-sidebar .editor-block-inspector__card {

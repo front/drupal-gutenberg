@@ -12,6 +12,12 @@
   &.hide {
     display: none;
   }
+
+  .loading-message {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+  }
 }
 
 .gutenberg-full-editor {
@@ -22,21 +28,32 @@
 
 .layout-container {
   &.full-width {
-    margin: 0px;
+    // margin: 0px;
   }
 }
 
 body .gutenberg {
-  position: relative;
+  // position: relative;
 }
 
 body .gutenberg__editor {
-  position: absolute;
-  min-height: calc(100vh - 88px);
+  // position: absolute;
+  // // min-height: calc(100vh - 88px);
+  // min-height: calc(100vh);
 }
 
 body .gutenberg__editor .edit-post-layout .edit-post-sidebar {
-  font-family: inherit;
+  font-family: $editorFont;
+  // font-family: inherit;
+}
+
+body .gutenberg__editor .edit-post-header {
+  font-family: $editorFont;
+  // font-family: inherit;
+}
+
+body .gutenberg__editor .components-popover {
+  font-family: $editorFont;
 }
 
 .field--gutenberg {
