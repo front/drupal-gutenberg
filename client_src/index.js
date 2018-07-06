@@ -1,7 +1,7 @@
 /* eslint-disable import/first */
 import './wp-init';
 // import { initializeEditor, select, dispatch } from '@frontkom/gutenberg';
-import { editPost, plugins, components, data } from '@frontkom/gutenberg';
+import { editPost, plugins, components, data, blocks, storypage } from '@frontkom/gutenberg';
 
 import './sass/index.scss';
 
@@ -28,6 +28,9 @@ let el, PanelBody, PluginSidebar;
       }
       
       initGutenberg(element).then(() => {
+        blocks.registerBlockType( storypage.blocks.section.name, storypage.blocks.section.settings );
+        blocks.registerBlockType( storypage.blocks.row.name, storypage.blocks.row.settings );
+
         // On page load always select sidebar's document tab.
         data.dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
 
@@ -39,6 +42,8 @@ let el, PanelBody, PluginSidebar;
 
         setTimeout(() => {
           $('.edit-post-header__settings').append($('.gutenberg-header-settings'));
+          // "clean" editor's content.
+          data.dispatch('core/editor').savePost();
         }, 0);
 
         $('.gutenberg-full-editor').addClass('ready');
@@ -46,11 +51,12 @@ let el, PanelBody, PluginSidebar;
 
         // Gutenberg is full of buttons which cause the form
         // to submit (no default prevent).
-        $(document.forms[0]).submit(e => {
+        $(document.forms[0]).submit(async e => {
           const selectEditor = data.select('core/editor');
           const dispatchEditor = data.dispatch('core/editor');
 
           dispatchEditor.savePost();
+
           $(element).val(selectEditor.getEditedPostContent());
 
           // Get the original button clicked.
@@ -124,10 +130,9 @@ let el, PanelBody, PluginSidebar;
       bodyPlaceholder: Drupal.t('Add content'),
       isRTL: false,
       autosaveInterval: 100,
-      // alignWide: false,
-      // availableTemplates: [],
-      // disableCustomColors: false,
-      // titlePlaceholder: 'Add a title here...',
+      canAutosave: false, // to disable Editor Autosave featured (default: true)
+      canPublish: false,  // to disable Editor Publish featured (default: true)
+      canSave: false,     // to disable Editor Save featured (default: true)    };
     };
 
     window.customGutenberg = {
@@ -153,9 +158,6 @@ let el, PanelBody, PluginSidebar;
           $(document.body).removeClass('gutenberg-sidedar-open');
           // Move tab before sidebar is "destroyed".
           $('.gutenberg-sidebar').append($('.edit-post-sidebar .components-panel .tab'));
-        },
-        'REMOVE_BLOCKS': (action, store) => {
-          console.log('REMOVE_BLOCKS', action, store);
         },
       },
       categories: [
