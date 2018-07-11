@@ -10,7 +10,11 @@
       "es6": true
     },
     "globals": {
-      "wp": true
+      "wp": true,
+      "$": true,
+      "Drupal": true,
+      "drupalSettings": true,
+      "React": true
     },
     "extends": "eslint:recommended",
     "rules": {
@@ -61,6 +65,12 @@
       "prefer-rest-params": "warn",
       "rest-spread-spacing": ["warn", "never"],
       "template-curly-spacing": "warn",
-      "yield-star-spacing": "warn"
+      "yield-star-spacing": "warn",
+      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+      "react/no-danger": "off",
+      "react/prop-types": [
+        "enabled",
+        { "ignore": "ignore", "customValidators": "customValidator" }
+      ]
     }
   }
