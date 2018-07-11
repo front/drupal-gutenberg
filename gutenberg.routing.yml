@@ -16,3 +16,20 @@ gutenberg.image.load:
   requirements:
     _permission: 'access content'
     _method: 'GET'
+gutenberg.blocks.load:
+  path: '/editor/blocks/load'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\BlocksController::load'
+  requirements:
+    _permission: 'access content'
+    _method: 'GET'
+gutenberg.blocks.load_single:
+  path: '/editor/blocks/load/{plugin_id}'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\BlocksController::loadById'
+    # parameters:
+    #   block:
+    #     type: entity:block
+  requirements:
+    _permission: 'access content'
+    _method: 'GET'
