@@ -1,80 +1,66 @@
 /* eslint-disable import/first */
 import './wp-init';
-// import { initializeEditor, select, dispatch } from '@frontkom/gutenberg';
-import { editPost, plugins, components, data, blocks, storypage } from '@frontkom/gutenberg';
+import { editor, editPost, plugins, data, blocks, storypage } from '@frontkom/gutenberg';
+import registerDrupalStore from './register-drupal-store';
+import registerDrupalBlocks from './register-drupal-blocks';
+import AdditionalFieldsPluginSidebar from './plugins/additional-fields';
 
 import './sass/index.scss';
 
-let el, PanelBody, PluginSidebar;
-
 (($, Drupal, wp) => {
   Drupal.editors.gutenberg = {
-    attach(element) {
-      function AdditionalFieldsPluginSidebar() {
-        return el(
-          PluginSidebar,
-          {
-            name: 'additional-fields',
-            title: 'Additional fields',
-            icon: 'forms',
-            isPinnable: true,
-          },
-          el(
-            PanelBody,
-            {},
-            ''
-          )
-        );
-      }
-      
-      initGutenberg(element).then(() => {
-        blocks.registerBlockType( storypage.blocks.section.name, storypage.blocks.section.settings );
-        blocks.registerBlockType( storypage.blocks.row.name, storypage.blocks.row.settings );
+    async attach(element) {
+      // Register plugins.
+      plugins.registerPlugin('drupal', {icon: 'forms', render: AdditionalFieldsPluginSidebar});
 
-        // On page load always select sidebar's document tab.
-        data.dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
+      // Register store.
+      registerDrupalStore(data);
 
-        el = wp.element.createElement;
-        PanelBody = components.PanelBody;
-        PluginSidebar = editPost.PluginSidebar;
+      // Register blocks.
+      blocks.registerBlockType( storypage.blocks.section.name, storypage.blocks.section.settings );
+      blocks.registerBlockType( storypage.blocks.row.name, storypage.blocks.row.settings );
+      await registerDrupalBlocks(blocks, editor);
+  
+      // Initialize editor.
+      await initGutenberg(element);
 
-        plugins.registerPlugin('drupal', {icon: 'forms', render: AdditionalFieldsPluginSidebar});
+      // On page load always select sidebar's document tab.
+      data.dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
 
-        setTimeout(() => {
-          $('.edit-post-header__settings').append($('.gutenberg-header-settings'));
-          // "clean" editor's content.
-          data.dispatch('core/editor').savePost();
-        }, 0);
+      setTimeout(() => {
+        $('.edit-post-header__settings').append($('.gutenberg-header-settings'));
+        // "clean" editor's content.
+        data.dispatch('core/editor').savePost();
+      }, 0);
 
-        $('.gutenberg-full-editor').addClass('ready');
-        $('#gutenberg-loading').addClass('hide');
+      $('.gutenberg-full-editor').addClass('ready');
+      $('#gutenberg-loading').addClass('hide');
 
-        // Gutenberg is full of buttons which cause the form
-        // to submit (no default prevent).
-        $(document.forms[0]).submit(async e => {
-          const selectEditor = data.select('core/editor');
-          const dispatchEditor = data.dispatch('core/editor');
+      // Gutenberg is full of buttons which cause the form
+      // to submit (no default prevent).
+      $(document.forms[0]).submit(async e => {
+        const selectEditor = data.select('core/editor');
+        const dispatchEditor = data.dispatch('core/editor');
 
-          dispatchEditor.savePost();
+        dispatchEditor.savePost();
 
-          $(element).val(selectEditor.getEditedPostContent());
+        $(element).val(selectEditor.getEditedPostContent());
 
-          // Get the original button clicked.
-          const $source = $(e.originalEvent.explicitOriginalTarget);
+        // Get the original button clicked.
+        const $source = $(e.originalEvent.explicitOriginalTarget);
 
-          // Only these buttons are allowed to submit.
-          if ($source.attr('id') === 'edit-submit' ||
-              $source.attr('id') === 'edit-preview' || 
-              $source.attr('id') === 'edit-delete') {
+        // Only these buttons are allowed to submit.
+        if ($source.attr('id') === 'edit-submit' ||
+            $source.attr('id') === 'edit-preview' || 
+            $source.attr('id') === 'edit-delete') {
 
-            return true;
-          }
+          return true;
+        }
 
-          // Just stop everything.
-          e.preventDefault();
-          e.stopPropagation();
-          return false;
-        });
+        // Just stop everything.
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
       });
     },
 
@@ -159,53 +145,7 @@ let el, PanelBody, PluginSidebar;
           // Move tab before sidebar is "destroyed".
           $('.gutenberg-sidebar').append($('.edit-post-sidebar .components-panel .tab'));
         },
-      },
-      categories: [
-        { slug: 'rows', title: 'Rows Blocks' },
-        { slug: 'common', title: 'Common Blocks' },
-        { slug: 'formatting', title: 'Formatting' },
-        { slug: 'layout', title: 'Layout Elements' },
-        // { slug: 'widgets', title: 'Widgets' },
-        { slug: 'embed', title: 'Embeds' },
-        { slug: 'shared', title: 'Shared Blocks' },
-      ],
-      rows: [
-        { cols: [ 6, 6 ], title: 'col6 x 2', description: '2 eq columns layout' },
-        { cols: [ 4, 4, 4 ], title: 'col4 x 3', description: '3 eq columns layout' },
-        { cols: [ 7, 5 ], title: 'col7-col5', description: 'A col7 and a col5' },
-        { cols: [ 5, 7 ], title: 'col5-col7', description: 'A col5 and a col7' },
-        { cols: [ 1, 10, 1 ], title: 'col1-col10-col1', description: 'A col1, a col10 and a col1' },
-        { cols: [ 2, 8, 2 ], title: 'col2-col8-col2', description: 'A col2, a col8 and a col2' },
-      ],
-      tabs: [
-        {
-          options: {
-            name: 'blocks',
-            title: 'Blocks',
-            className: 'editor-inserter__tab',
-          },
-          tabScrollTop: 0,
-          getItemsForTab() {
-            return item => item.category !== 'embed' && item.category !== 'shared' && item.category !== 'rows';
-          },
-        },
-        {
-          options: {
-            name: 'rows',
-            title: 'Rows',
-            className: 'editor-inserter__tab',
-          },
-          tabScrollTop: 0,
-          getItemsForTab() {
-            return item => item.category === 'rows';
-          },
-        },
-      ],
-      panels: [ 'post-status', 'articles-panel', 'settings-panel', 'last-revision' ],
-      editor: {
-        hideTitle: true,
-        noMediaLibrary: false,
-      },
+      }
     };
 
     return new Promise(resolve => {
