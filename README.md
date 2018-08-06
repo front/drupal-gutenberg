@@ -1,9 +1,7 @@
 # # Drupal Gutenberg
 Drupal Gutenberg brings the powerful admin features of Gutenberg to Drupal.
 
-[Drupal]([Drupal - Open Source CMS | Drupal.org](https://www.drupal.org/)) + [Gutenberg](https://wordpress.org/gutenberg/) is a powerful combo. We believe Gutenberg’s ease of use combined with the underlying architecture of Drupal will bring new business opportunities, and ultimately help people succeed with their online strategies.
-
-Drupal 8 is a rock solid CMS framework packed with powerful admin features. Our only complaint? Drupal 8 is missing a modern UI for rich content creation. Let’s change this! 
+[Drupal](https://www.drupal.org/)) + [Gutenberg](https://wordpress.org/gutenberg/) is a powerful combo. Drupal 8 is a rock solid CMS framework packed with powerful admin features. Our only complaint? Drupal 8 is missing a modern UI for rich content creation. Let’s change this! 
 
 We did a [presentation](https://docs.google.com/presentation/d/1OOTDSx4hPQaEweIrwAk8fs9UmN5nEcLeAt5VFec96ek/edit#slide=id.g19049ed2db_0_5) on DrupalCamp a while back, and have explored and even built a few different JS-powered options. But, surely, there must be some open source tools out there we could benefit from? 
 
@@ -28,7 +26,7 @@ In the first release we ship blocks like:
 - Etc.
 
 ## Architecture
-While Gutenberg is mainly a React app, it is not built to be CMS-agnostic (...yet; see my [Github issue from 2017](https://github.com/WordPress/gutenberg/issues/2780)). First we created a fork which used some build magic to strip away the WP specifics. After hundreds of commits, we killed this repo, and moved some of the code into a new structure for easier maintenance. 
+While Gutenberg is mainly a React app, it is not built to be CMS-agnostic (...yet; see our [Github issue from 2017](https://github.com/WordPress/gutenberg/issues/2780)). First we created a fork which used some build magic to strip away the WP specifics. After hundreds of commits, we killed this repo, and moved some of the code into a new structure for easier maintenance. 
 
 This is the current structure:
 
@@ -48,12 +46,10 @@ We aim to reuse Drupal styling for UI elements wherever we can. We want it to fe
 
 For the non-technical user, it’s not hard to get going. Simply install the Drupal module, and it’s all working.
 
-
-
 ## Important links
-[Gutenberg-js on NPM](https://www.npmjs.com/package/@frontkom/gutenberg-js)
-[Gutenberg on Drupal.org](https://www.drupal.org/sandbox/marcofernandes/2981601)
-[Gutenberg-js on GitHub: JavaScript only version of the WordPress Gutenberg editor](https://github.com/front/gutenberg-js)
+- [Gutenberg-js on NPM](https://www.npmjs.com/package/@frontkom/gutenberg-js)
+- [Gutenberg on Drupal.org](https://www.drupal.org/sandbox/marcofernandes/2981601)
+- [Gutenberg-js on GitHub: JavaScript only version of the WordPress Gutenberg editor](https://github.com/front/gutenberg-js)
 
 ## Installation
 To test the module, simply download it from the [Drupal Gutenberg project page](https://www.drupal.org/project/gutenberg) and enable it. Add a new page and play with it! 
