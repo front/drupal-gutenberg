@@ -52,7 +52,7 @@ For the non-technical user, it’s not hard to get going. Simply install the Dru
 - [Gutenberg-js on GitHub: JavaScript only version of the WordPress Gutenberg editor](https://github.com/front/gutenberg-js)
 
 ## Installation
-To test the module, simply download it from the [Drupal Gutenberg project page](https://www.drupal.org/project/gutenberg) and enable it. Add a new page and play with it! 
+To test the module, simply download it from the [Drupal Gutenberg project page](https://www.drupal.org/sandbox/marcofernandes/2981601) and enable it. Add a new page and play with it! 
 
 Then just choose "Gutenberg Blocks" at any long text field.
 
