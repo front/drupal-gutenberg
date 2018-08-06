@@ -52,7 +52,7 @@ For the non-technical user, it’s not hard to get going. Simply install the Dru
 
 ## Important links
 [Gutenberg-js on NPM](https://www.npmjs.com/package/@frontkom/gutenberg-js)
-[Gutenberg on Drupal.org](https://www.drupal.org/project/gutenberg)
+[Gutenberg on Drupal.org](https://www.drupal.org/sandbox/marcofernandes/2981601)
 [Gutenberg-js on GitHub: JavaScript only version of the WordPress Gutenberg editor](https://github.com/front/gutenberg-js)
 
 ## Installation
