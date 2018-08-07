@@ -1,4 +1,4 @@
-import { data } from '@frontkom/gutenberg';
+import { data } from '@frontkom/gutenberg-js';
 import DrupalBlock from './components/drupal-block';
 import DrupalIcon from './components/drupal-icon';
 

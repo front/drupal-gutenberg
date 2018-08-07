@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "@frontkom/gutenberg": "0.2.3",
+    "@frontkom/gutenberg-js": "^1.2.2",
     "tinymce": "^4.7.13",
     "url": "^0.11.0"
   },

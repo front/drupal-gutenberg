@@ -1,4 +1,4 @@
-import { data } from '@frontkom/gutenberg';
+import { data } from '@frontkom/gutenberg-js';
 
 const { withSelect } = data;
 

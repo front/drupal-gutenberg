@@ -1,6 +1,6 @@
 /* eslint-disable import/first */
 import './wp-init';
-import { editor, editPost, plugins, data, blocks, storypage } from '@frontkom/gutenberg';
+import { editor, editPost, plugins, data, blocks } from '@frontkom/gutenberg-js';
 import registerDrupalStore from './register-drupal-store';
 import registerDrupalBlocks from './register-drupal-blocks';
 import AdditionalFieldsPluginSidebar from './plugins/additional-fields';
@@ -17,8 +17,8 @@ import './sass/index.scss';
       registerDrupalStore(data);
 
       // Register blocks.
-      blocks.registerBlockType( storypage.blocks.section.name, storypage.blocks.section.settings );
-      blocks.registerBlockType( storypage.blocks.row.name, storypage.blocks.row.settings );
+      // blocks.registerBlockType( storypage.blocks.section.name, storypage.blocks.section.settings );
+      // blocks.registerBlockType( storypage.blocks.row.name, storypage.blocks.row.settings );
       await registerDrupalBlocks(blocks, editor);
   
       // Initialize editor.

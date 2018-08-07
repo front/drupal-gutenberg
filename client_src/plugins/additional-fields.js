@@ -1,4 +1,4 @@
-import { components, editPost } from '@frontkom/gutenberg';
+import { components, editPost } from '@frontkom/gutenberg-js';
 
 const { PanelBody } = components;
 const { PluginSidebar } = editPost;
