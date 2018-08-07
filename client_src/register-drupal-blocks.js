@@ -10,7 +10,7 @@ const providerIcons = {
 };
 
 export default function registerDrupalBlocks(blocks, editor) {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     const {
       BlockAlignmentToolbar,
       BlockControls,
@@ -39,7 +39,7 @@ export default function registerDrupalBlocks(blocks, editor) {
         block_id = block_id.replace(/:/g,'-');
 
         blocks.registerBlockType( block_id, {
-          title: definition.admin_label,
+          title: `${definition.admin_label} [${definition.category}]`,
           icon: providerIcons[definition.provider] || DrupalIcon,
           category: 'drupal',
           supports: {
