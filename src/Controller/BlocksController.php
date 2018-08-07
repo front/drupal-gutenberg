@@ -57,6 +57,13 @@ class BlocksController extends ControllerBase {
     $render = $plugin_block->build();
     $content = \Drupal::service('renderer')->render($render);
 
+    // If the block is a view with contexts defined, it may
+    // not render on the editor because of, for example, the
+    // node path. Let's just write some warning if no content.
+    if ($content === '') {
+      $content = t('Not able to render the content on editor possibiliy due to path restrictions.');
+    }
+
     return new JsonResponse(['html' => $content]);
   }
 
