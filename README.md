@@ -1,4 +1,4 @@
-# # Drupal Gutenberg
+# Drupal Gutenberg
 Drupal Gutenberg brings the powerful admin features of Gutenberg to Drupal.
 
 [Drupal](https://www.drupal.org/)) + [Gutenberg](https://wordpress.org/gutenberg/) is a powerful combo. Drupal 8 is a rock solid CMS framework packed with powerful admin features. Our only complaint? Drupal 8 is missing a modern UI for rich content creation. Let’s change this! 
@@ -7,7 +7,7 @@ We did a [presentation](https://docs.google.com/presentation/d/1OOTDSx4hPQaEweIr
 
 Early 2017 we were introduced to a work-in-progress WordPress initiative for improved editing experience. More functionality wrapped in a smooth UI? Hundreds of hours with user testing? Decoupled? React.js? Clean output? Open source? We were hooked!
 
-## What it looks like
+## How does it work?
 Everything is a block!
 
 True to the Drupal paradigm, all elements on a Gutenberg enabled page are (Gutenberg) blocks. Gutenberg comes with 20+ core blocks, and so does Drupal core. This means all existing Drupal blocks available in the Gutenberg UI can be inserted into a page wherever you want, alongside Gutenberg core blocks. And of course, you can extend them or build your own.
@@ -24,6 +24,8 @@ In the first release we ship blocks like:
 - Layout blocks
 - Buttons
 - Etc.
+
+![Drupal Gutenberg](https://www.frontkom.no/hubfs/drupal-page-builder.gif?t=1533202049704f "Drupal Gutenberg")
 
 ## Architecture
 While Gutenberg is mainly a React app, it is not built to be CMS-agnostic (...yet; see our [Github issue from 2017](https://github.com/WordPress/gutenberg/issues/2780)). First we created a fork which used some build magic to strip away the WP specifics. After hundreds of commits, we killed this repo, and moved some of the code into a new structure for easier maintenance. 
@@ -50,13 +52,14 @@ For the non-technical user, it’s not hard to get going. Simply install the Dru
 - [Gutenberg-js on NPM](https://www.npmjs.com/package/@frontkom/gutenberg-js)
 - [Gutenberg on Drupal.org](https://www.drupal.org/sandbox/marcofernandes/2981601)
 - [Gutenberg-js on GitHub: JavaScript only version of the WordPress Gutenberg editor](https://github.com/front/gutenberg-js)
+- [Norwegian introduction post](https://www.frontkom.no/blogg/drupal-gutenberg) (English post coming later)
 
 ## Installation
 To test the module, simply download it from the [Drupal Gutenberg project page](https://www.drupal.org/sandbox/marcofernandes/2981601) and enable it. Add a new page and play with it! 
 
 Then just choose "Gutenberg Blocks" at any long text field.
 
-Note: Don't use Gutenberg on more than one field per entity. Not ready for that, yet.
+Note: Don't use Gutenberg on more than one field per entity. Not ready for that (yet).
 
 ## Development
 `npm install`
