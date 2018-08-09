@@ -35,22 +35,26 @@ import './sass/index.scss';
 
       // Gutenberg is full of buttons which cause the form
       // to submit (no default prevent).
-      $(document.forms[0]).submit(async e => {
+      $(document.forms[0]).on('submit', async e => {
         const selectEditor = data.select('core/editor');
         const dispatchEditor = data.dispatch('core/editor');
-
-        dispatchEditor.savePost();
 
         $(element).val(selectEditor.getEditedPostContent());
 
         // Get the original button clicked.
-        const $source = $(e.originalEvent.explicitOriginalTarget);
+        let $source = $('[id^="edit-"]:focus');
+
+        // For Firefox...
+        if (!$source.length) {
+          $source = $(e.originalEvent.explicitOriginalTarget);
+        }
 
         // Only these buttons are allowed to submit.
         if ($source.attr('id') === 'edit-submit' ||
             $source.attr('id') === 'edit-preview' || 
             $source.attr('id') === 'edit-delete') {
 
+          dispatchEditor.savePost();
           return true;
         }
 
@@ -112,7 +116,7 @@ import './sass/index.scss';
       titlePlaceholder: Drupal.t('Add title'),
       bodyPlaceholder: Drupal.t('Add content'),
       isRTL: false,
-      autosaveInterval: 100,
+      autosaveInterval: 0,
       canAutosave: false, // to disable Editor Autosave featured (default: true)
       canPublish: false,  // to disable Editor Publish featured (default: true)
       canSave: false,     // to disable Editor Save featured (default: true)    };
