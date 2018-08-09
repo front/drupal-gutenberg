@@ -81,12 +81,12 @@ const requestPaths = {
     method: 'POST',
     regex: /\/wp\/v2\/media/g,
     process: (matches, data) => {
-      console.log('save media', drupalSettings);
+      // console.log('save media', drupalSettings);
       return new Promise((resolve, reject) => {
 
         let file;
         for (let pair of data.entries()) {
-          console.log(pair);
+          // console.log(pair);
           if (pair[0] === 'file') {
             file = pair[1];
           }
@@ -232,6 +232,6 @@ function processPath(options) {
 }
 
 export default function apiRequest(options) {
-  console.log(options);
+  // console.log(options);
   return processPath(options);
 }
