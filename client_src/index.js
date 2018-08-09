@@ -42,7 +42,12 @@ import './sass/index.scss';
         $(element).val(selectEditor.getEditedPostContent());
 
         // Get the original button clicked.
-        const $source = $('[id^="edit-"]:focus');
+        let $source = $('[id^="edit-"]:focus');
+
+        // For Firefox...
+        if (!$source.length) {
+          $source = $(e.originalEvent.explicitOriginalTarget);
+        }
 
         // Only these buttons are allowed to submit.
         if ($source.attr('id') === 'edit-submit' ||
