@@ -29,12 +29,9 @@ import './sass/index.scss';
 
       setTimeout(() => {
         $('.edit-post-header__settings').append($('.gutenberg-header-settings'));
-        // "clean" editor's content.
-        data.dispatch('core/editor').savePost();
+        $('.gutenberg-full-editor').addClass('ready');
+        $('#gutenberg-loading').addClass('hide');
       }, 0);
-
-      $('.gutenberg-full-editor').addClass('ready');
-      $('#gutenberg-loading').addClass('hide');
 
       // Gutenberg is full of buttons which cause the form
       // to submit (no default prevent).
