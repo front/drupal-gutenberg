@@ -9,12 +9,15 @@ const providerIcons = {
   'core' : DrupalIcon
 };
 
-export default function registerDrupalBlocks(blocks, editor) {
+export default function registerDrupalBlocks(blocks, editor, components) {
   return new Promise(resolve => {
     const {
       BlockAlignmentToolbar,
       BlockControls,
+      InspectorControls
     }  = editor;
+
+    const { PanelBody } = components;
 
     const Fragment = wp.element.Fragment;
 
@@ -68,6 +71,11 @@ export default function registerDrupalBlocks(blocks, editor) {
                     controls={[ 'left', 'right', 'center', 'wide', 'full' ]}
                   />
                 </BlockControls>
+                <InspectorControls>
+                  <PanelBody title="Block settings">
+                    <h1>TEST</h1>
+                  </PanelBody>
+                </InspectorControls>
                 <DrupalBlock className={className} id={id} url={`${drupalSettings.path.baseUrl}editor/blocks/load/${id}`} />
               </Fragment>
             );
