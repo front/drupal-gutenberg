@@ -124,7 +124,7 @@ import './sass/index.scss';
     window.customGutenberg = {
       events: {
         'OPEN_GENERAL_SIDEBAR': action => {
-          console.log('OPEN_GENERAL_SIDEBAR', action);
+          // console.log('OPEN_GENERAL_SIDEBAR', action);
           let tab = action.name.replace(/edit-post\//g, '');
           tab = tab.replace(/drupal\//g, '');
 
