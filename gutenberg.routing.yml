@@ -27,9 +27,13 @@ gutenberg.blocks.load_single:
   path: '/editor/blocks/load/{plugin_id}'
   defaults:
     _controller: '\Drupal\gutenberg\Controller\BlocksController::loadById'
-    # parameters:
-    #   block:
-    #     type: entity:block
+  requirements:
+    _permission: 'access content'
+    _method: 'GET'
+gutenberg.blocks.load_configuration:
+  path: '/editor/blocks/load/configuration/{plugin_id}'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\BlocksController::loadConfigurationForm'
   requirements:
     _permission: 'access content'
     _method: 'GET'
