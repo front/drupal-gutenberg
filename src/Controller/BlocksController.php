@@ -6,6 +6,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Drupal\block\Entity\Block;
+use Drupal\block\Controller;
 
 /**
  * Returns responses for our blocks routes.
@@ -67,4 +68,38 @@ class BlocksController extends ControllerBase {
     return new JsonResponse(['html' => $content]);
   }
 
+  /**
+   * Returns JSON with a rendered block configuration form.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The request.
+   * @param string $plugin_id
+   *   Plugin ID.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   The JSON response.
+   */
+  public function loadConfigurationForm(Request $request, $plugin_id) {
+    $block_manager = \Drupal::service('plugin.manager.block');
+    $config = [];
+    $plugin_block = $block_manager->createInstance($plugin_id, $config);
+
+    // Some blocks might implement access check.
+    $access_result = $plugin_block->access(\Drupal::currentUser());
+
+    // Return empty render array if user doesn't have access.
+    // $access_result can be boolean or an AccessResult class
+    if (is_object($access_result) && $access_result->isForbidden() || is_bool($access_result) && !$access_result) {
+      // You might need to add some cache tags/contexts.
+      return new JsonResponse(['confiruation' => 'No access.']);
+    }
+
+    $form = [];
+    $form_state = new \Drupal\Core\Form\FormState();
+  
+    $form = $plugin_block->buildConfigurationForm($form, $form_state);
+    $html = \Drupal::service('renderer')->render($form);
+  
+    return new JsonResponse(['html' => $html]);
+  }
 }
