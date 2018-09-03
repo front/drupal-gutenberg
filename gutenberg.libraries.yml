@@ -18,9 +18,7 @@ frontkom-gutenberg-frontend:
   css:
     base:
       dist/css/block-library/style.css : {}
-      dist/css/block-library/edit-blocks.css : {}
       dist/css/block-library/theme.css : {}
-      dist/css/editor/style.css : {}
       dist/css/nux/style.css : {}
       dist/css/style.css : {}
       dist/css/main.css : {}
