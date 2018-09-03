@@ -1,4 +1,4 @@
-import apiRequest from './api-request';
+import apiFetch from './api-fetch';
 import { addQueryArgs } from './url'; 
 
 // set the locale
@@ -9,6 +9,6 @@ window._wpDateSettings = {
 };
 
 window.wp = {
-  apiRequest,
+  apiFetch,
   url: { addQueryArgs },
 };

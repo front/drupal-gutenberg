@@ -51,16 +51,24 @@ module.exports = {
         to: 'css/style.css'
       },
       {
-        from : 'node_modules/@frontkom/gutenberg-js/build/css/core-blocks/style.css',
-        to: 'css/core-blocks/style.css'
+        from : 'node_modules/@frontkom/gutenberg-js/build/css/block-library/style.css',
+        to: 'css/block-library/style.css'
       },
       {
-        from : 'node_modules/@frontkom/gutenberg-js/build/css/core-blocks/edit-blocks.css',
-        to: 'css/core-blocks/edit-blocks.css'
+        from : 'node_modules/@frontkom/gutenberg-js/build/css/block-library/edit-blocks.css',
+        to: 'css/block-library/edit-blocks.css'
       },
       {
-        from : 'node_modules/@frontkom/gutenberg-js/build/css/core-blocks/theme.css',
-        to: 'css/core-blocks/theme.css'
+        from : 'node_modules/@frontkom/gutenberg-js/build/css/block-library/theme.css',
+        to: 'css/block-library/theme.css'
+      },
+      {
+        from : 'node_modules/@frontkom/gutenberg-js/build/css/editor/style.css',
+        to: 'css/editor/style.css'
+      },
+      {
+        from : 'node_modules/@frontkom/gutenberg-js/build/css/nux/style.css',
+        to: 'css/nux/style.css'
       }
     ])      
   ],

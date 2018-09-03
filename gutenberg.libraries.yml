@@ -2,9 +2,11 @@ frontkom-gutenberg-editor:
   version: 0.0.22
   css:
     base:
-      dist/css/core-blocks/style.css : {}
-      dist/css/core-blocks/edit-blocks.css : {}
-      dist/css/core-blocks/theme.css : {}
+      dist/css/block-library/style.css : {}
+      dist/css/block-library/edit-blocks.css : {}
+      dist/css/block-library/theme.css : {}
+      dist/css/editor/style.css : {}
+      dist/css/nux/style.css : {}
       dist/css/style.css : {}
       dist/css/main.css : {}
   js:
@@ -15,6 +17,10 @@ frontkom-gutenberg-frontend:
   version: 0.0.22
   css:
     base:
-      dist/css/core-blocks/style.css : {}
-      dist/css/core-blocks/theme.css : {}
+      dist/css/block-library/style.css : {}
+      dist/css/block-library/edit-blocks.css : {}
+      dist/css/block-library/theme.css : {}
+      dist/css/editor/style.css : {}
+      dist/css/nux/style.css : {}
       dist/css/style.css : {}
+      dist/css/main.css : {}

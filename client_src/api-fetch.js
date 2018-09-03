@@ -231,7 +231,7 @@ function processPath(options) {
   });
 }
 
-export default function apiRequest(options) {
+export default function apiFetch(options) {
   // console.log(options);
   return processPath(options);
 }
