@@ -17,6 +17,6 @@ export function addQueryArgs(url, args) {
   const query = { ...parsedURL.query, ...args };
   delete parsedURL.search;
 
-  // return format({ ...parsedURL, query });
-  return '';
+  return format({ ...parsedURL, query });
+  // return '';
 }

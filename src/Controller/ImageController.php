@@ -41,6 +41,7 @@ class ImageController extends ControllerBase {
       'source_url' => $image_src,
       'link' => $image_src,
       'media_type' => 'image',
+      'title' => '',
       'data' => [
         'entity_type' => 'file',
         'entity_uuid' => $file->uuid()

@@ -80,13 +80,11 @@ const requestPaths = {
   'save-media': {
     method: 'POST',
     regex: /\/wp\/v2\/media/g,
-    process: (matches, data) => {
-      // console.log('save media', drupalSettings);
+    process: (matches, data, body) => {
       return new Promise((resolve, reject) => {
 
         let file;
-        for (let pair of data.entries()) {
-          // console.log(pair);
+        for (let pair of body.entries()) {
           if (pair[0] === 'file') {
             file = pair[1];
           }
@@ -174,6 +172,7 @@ const requestPaths = {
   'root': {
     method: 'GET',
     regex: /^\/$/g,
+    // regex: /\s/g,
     process: () => { // (matches, data)
       return new Promise(resolve => {
         return resolve({
@@ -213,7 +212,7 @@ function processPath(options) {
       let matches = requestPath.regex.exec(options.path + '');
 
       if (matches && matches.length > 0 && (options.method || 'GET' === requestPath.method)) {
-        return requestPath.process(matches, options.data);
+        return requestPath.process(matches, options.data, options.body);
       }
     }
   }
@@ -232,6 +231,5 @@ function processPath(options) {
 }
 
 export default function apiFetch(options) {
-  // console.log(options);
   return processPath(options);
 }
