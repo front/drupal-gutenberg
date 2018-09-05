@@ -16,16 +16,19 @@ import './sass/index.scss';
       // Register store.
       registerDrupalStore(data);
 
+      // Initialize editor.
+      await initGutenberg(element);
+
       // Register blocks.
       // blocks.registerBlockType( storypage.blocks.section.name, storypage.blocks.section.settings );
       // blocks.registerBlockType( storypage.blocks.row.name, storypage.blocks.row.settings );
       await registerDrupalBlocks(blocks, editor);
-  
-      // Initialize editor.
-      await initGutenberg(element);
 
       // On page load always select sidebar's document tab.
       data.dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
+
+      // Disable tips.
+      data.dispatch('core/nux').disableTips();
 
       setTimeout(() => {
         $('.edit-post-header__settings').append($('.gutenberg-header-settings'));
@@ -113,8 +116,9 @@ import './sass/index.scss';
       allowedBlockTypes: true, 
       disableCustomColors: false, 
       disablePostFormats: false,
+      mediaLibrary: false,
       titlePlaceholder: Drupal.t('Add title'),
-      bodyPlaceholder: Drupal.t('Add content'),
+      bodyPlaceholder: Drupal.t('Add text or type / to add content'),
       isRTL: false,
       autosaveInterval: 0,
       canAutosave: false, // to disable Editor Autosave featured (default: true)

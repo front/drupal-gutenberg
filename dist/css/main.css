@@ -35,6 +35,10 @@ body .gutenberg__editor .edit-post-layout .edit-post-sidebar {
 body .gutenberg__editor .edit-post-layout .components-popover {
   font-family: inherit; }
 
+.editor-block-types-list__item-title {
+  padding: 4px 2px;
+  min-height: 48px; }
+
 body .gutenberg__editor .edit-post-layout .edit-post-header {
   position: fixed;
   font-family: inherit; }
