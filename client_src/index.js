@@ -29,6 +29,9 @@ import './sass/index.scss';
 
       // Disable tips.
       data.dispatch('core/nux').disableTips();
+      
+      // Disable inline image block.
+      data.dispatch('core/editor').unregisterToken('core/image');
 
       setTimeout(() => {
         $('.edit-post-header__settings').append($('.gutenberg-header-settings'));
