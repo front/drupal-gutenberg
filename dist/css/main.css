@@ -32,6 +32,12 @@ body .gutenberg__editor .edit-post-layout .edit-post-sidebar {
 .field--gutenberg .filter-wrapper {
   display: none; }
 
+.wp-block-image .components-placeholder__fieldset button:not(.editor-media-placeholder__upload-button) {
+  display: none; }
+
+.editor-block-contextual-toolbar .editor-block-toolbar button[aria-label="Edit image"] {
+  display: none; }
+
 body .gutenberg__editor .edit-post-layout .components-popover {
   font-family: inherit; }
 
