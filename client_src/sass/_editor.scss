@@ -51,7 +51,7 @@ body .gutenberg__editor .edit-post-layout .edit-post-sidebar {
   }
 }
 
-.wp-block-image {
+.wp-block-image, .wp-block-cover-image {
   .components-placeholder__fieldset {
     button:not(.editor-media-placeholder__upload-button) {
       display: none;
@@ -65,4 +65,8 @@ body .gutenberg__editor .edit-post-layout .edit-post-sidebar {
       display: none;
     }
   }
+}
+
+.editor-rich-text__tinymce[data-is-placeholder-visible="true"] {
+  z-index: 2;
 }
