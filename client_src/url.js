@@ -17,6 +17,9 @@ export function addQueryArgs(url, args) {
   const query = { ...parsedURL.query, ...args };
   delete parsedURL.search;
 
+  if (parsedURL.path === 'post.php') {
+    return '?save=1';
+  }
+
   return format({ ...parsedURL, query });
-  // return '';
 }

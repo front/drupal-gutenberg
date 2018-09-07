@@ -42,10 +42,12 @@ import './sass/index.scss';
       // Gutenberg is full of buttons which cause the form
       // to submit (no default prevent).
       $(document.forms[0]).on('submit', async e => {
-        const selectEditor = data.select('core/editor');
-        const dispatchEditor = data.dispatch('core/editor');
+        // Update editor textarea with gutenberg content.
+        $(element).val(data.select('core/editor').getEditedPostContent());
 
-        $(element).val(selectEditor.getEditedPostContent());
+        data.dispatch('core/edit-post').openGeneralSidebar('edit-post/document');
+        // Clear content "dirty" state.
+        data.dispatch('core/editor').savePost();
 
         // Get the original button clicked.
         let $source = $('[id^="edit-"]:focus');
@@ -60,7 +62,6 @@ import './sass/index.scss';
             $source.attr('id') === 'edit-preview' || 
             $source.attr('id') === 'edit-delete') {
 
-          dispatchEditor.savePost();
           return true;
         }
 
@@ -107,10 +108,11 @@ import './sass/index.scss';
     wp.node = {
       content: { raw: $(element).val() },
       templates: '',
-      title: { raw: document.title },
+      // title: { raw: document.title },
       type: 'page',
-      status: 'auto-draft',
-      id: 12345, // Doesn't really matters because we don't do "AJAX" saves.
+      // status: 'auto-draft',
+      status: 'draft',
+      id: 1, // Doesn't really matters because we don't do "AJAX" saves.
     };
 
     const editorSettings = { 
@@ -159,7 +161,7 @@ import './sass/index.scss';
     return new Promise(resolve => {
       // Wait a tick for CKEditor(?) to finish its things.
       setTimeout(() => {
-        editPost.initializeEditor( target, 'page', 12345, editorSettings, {} );
+        editPost.initializeEditor( target, 'page', 1, editorSettings, {} );
         resolve();
       }, 0);
     });
