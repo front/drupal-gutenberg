@@ -41,16 +41,23 @@ body .gutenberg__editor .edit-post-layout .edit-post-sidebar {
 .editor-rich-text__tinymce[data-is-placeholder-visible="true"] {
   z-index: 2; }
 
+.editor-rich-text__tinymce ~ .editor-rich-text__tinymce {
+  opacity: .5;
+  pointer-events: none; }
+
 body .gutenberg__editor .edit-post-layout .components-popover {
   font-family: inherit; }
 
 .editor-block-types-list__item-title {
   padding: 4px 2px;
-  min-height: 48px; }
+  min-height: 68px; }
 
 body .gutenberg__editor .edit-post-layout .edit-post-header {
   position: fixed;
   font-family: inherit; }
+
+body .gutenberg__editor .edit-post-header__settings .edit-post-pinned-plugins {
+  display: none; }
 
 @media (min-width: 782px) {
   body.toolbar-horizontal .edit-post-sidebar {
