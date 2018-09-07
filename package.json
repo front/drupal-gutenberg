@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "@frontkom/gutenberg-js": "^2.3.0",
+    "@frontkom/gutenberg-js": "^2.3.3",
     "querystring": "^0.2.0",
-    "tinymce": "^4.7.13",
+    "tinymce": "^4.6.2",
     "url": "^0.11.0"
   },
   "devDependencies": {
@@ -42,5 +42,5 @@
     "watch": "webpack --watch"
   },
   "author": "Frontkom",
-  "license": "MIT"
+  "license": "GPL-2.0-or-later"
 }
