@@ -152,7 +152,7 @@ const requestPaths = {
       return new Promise((resolve, reject) => {
         jQuery.ajax({
           method: 'GET',
-          url: `http://open.iframe.ly/api/oembed?${matches[1]}&origin=drupal`,
+          url: `//open.iframe.ly/api/oembed?${matches[1]}&origin=drupal`,
           processData: false,
           contentType: false,
           accepts: {
