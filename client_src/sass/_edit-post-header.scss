@@ -3,6 +3,12 @@ body .gutenberg__editor .edit-post-layout .edit-post-header {
   font-family: inherit;
 }
 
+body .gutenberg__editor .edit-post-header__settings {
+  .edit-post-pinned-plugins {
+    display: none;
+  }
+}
+
 body.toolbar-horizontal {
   .edit-post-sidebar {
     @media (min-width: 782px) {
