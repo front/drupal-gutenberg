@@ -75,6 +75,11 @@ function gutenberg_form_node_form_alter(&$form, FormStateInterface $form_state) 
     $form[$text_fields[0]]['#attributes']['class'][] = 'field--gutenberg';
   }
 
+  // TODO: Need to solve form validation with react components.
+  if (!$node->nid->getString()) {
+    $form['title']['widget'][0]['value']['#default_value'] = t('New page');
+  }
+
   foreach($text_fields as $fieldname) {
     // For the rest of the text fields call after build to remove
     // Gutenberg from text format options.
