@@ -11,7 +11,7 @@ import './sass/index.scss';
   Drupal.editors.gutenberg = {
     async attach(element) {
       // Register plugins.
-      plugins.registerPlugin('drupal', {icon: 'forms', render: AdditionalFieldsPluginSidebar});
+      // plugins.registerPlugin('drupal', {icon: 'forms', render: AdditionalFieldsPluginSidebar});
 
       // Register store.
       registerDrupalStore(data);
