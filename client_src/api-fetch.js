@@ -20,13 +20,13 @@ const types = {
       'template-settings': false, // * hide template-settings panel
       thumbnail: false, // featured-image panel
       title: false, // show title on editor
-      extras: true,
+      extras: false,
     },
     viewable: false,
     saveable: false,
     publishable: false,
     autosaveable: false
-  }
+  },
 };
 
 const requestPaths = {
@@ -34,18 +34,20 @@ const requestPaths = {
     method: 'PUT',
     regex: /\/wp\/v2\/(\w*)\/(\d*)/g,
     process: (matches, data) => {
+      wp.node  = {
+        pathType: 'save-post',
+        id: 1,
+        type: 'page',
+        title: {
+          raw: document.title
+        },
+        content: {
+          raw: data
+        }
+      }
+
       return new Promise(resolve => {
-        resolve({
-          pathType: 'save-post',
-          id: matches[2],
-          type: matches[1],
-          title: {
-            raw: document.title
-          },
-          content: {
-            raw: data
-          }
-        });
+        resolve(wp.node);
       });
     }
   },
@@ -190,7 +192,7 @@ const requestPaths = {
     process: () => {
       return new Promise(resolve => {
         return resolve(types.page);
-      });       
+      });
     }
   },
   'load-types': {
