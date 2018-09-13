@@ -123,6 +123,8 @@ body .gutenberg__editor .edit-post-header__settings .edit-post-pinned-plugins {
       background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.125), transparent 4px);
       border-top-width: 0;
       padding-top: 17px; }
+  .edit-post-sidebar select {
+    width: 100%; }
 
 .gutenberg-sidebar {
   display: none; }
