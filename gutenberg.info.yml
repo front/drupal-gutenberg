@@ -4,4 +4,4 @@ description: "Smart editing for Drupal. Block-oriented."
 package: Gutenberg
 core: 8.x
 dependencies:
-  - editor
+  - drupal:editor
