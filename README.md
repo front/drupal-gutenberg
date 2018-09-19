@@ -54,7 +54,7 @@ For the non-technical user, it’s not hard to get going. Simply install the Dru
 - [Norwegian introduction post](https://www.frontkom.no/blogg/drupal-gutenberg) (English post coming later)
 
 ## Installation
-To test the module, simply download it from the [Drupal Gutenberg project page](https://www.drupal.org/sandbox/marcofernandes/2981601) and enable it.
+To test the module, simply download it from the [Drupal Gutenberg project page](https://www.drupal.org/project/gutenberg) and enable it.
 
 Then go to any content type edit page and enable *Gutenberg Experience*.
 
