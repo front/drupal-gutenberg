@@ -5,8 +5,10 @@
  * Provides integration with the Gutenberg editor.
  */
 
+use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityFormBuilder;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_form_alter().
@@ -239,4 +241,68 @@ function gutenberg_theme() {
       'template' => 'node-edit-form--gutenberg',
     )
   );
+}
+
+/**
+ * Implements hook_element_info_alter().
+ */
+function gutenberg_element_info_alter(array &$info) {
+  if (!empty($info['text_format'])) {
+    // Add custom processor to eliminate the format if needed.
+    $info['text_format']['#process'][] = '_gutenberg_text_format_processor';
+  }
+}
+
+/**
+ * Process the text format element to eliminate the gutenberg format.
+ *
+ * On the fields that don't belong to content types with enabled gutenberg
+ * experience there is no need to have the gutenberg format.
+ *
+ * @param array $element
+ *   Render Element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state object.
+ * @param array $complete_form
+ *   Complete form array.
+ *
+ * @return array
+ *   Processed render element.
+ */
+function _gutenberg_text_format_processor($element, FormStateInterface $form_state, array &$complete_form) {
+  // Check first if the format is in the list. It might be disabled or the
+  // current user has not rights to access it.
+  if (!empty($element['format']) && isset($element['format']['format']['#options']['gutenberg'])) {
+    // By default let's assume that gutenberg format is not allowed.
+    $gutenberg_allowed = FALSE;
+    /** @var \Drupal\Core\Entity\ContentEntityForm $form */
+    $form = $form_state->getFormObject();
+    // Check whether the form that contains the element is an EntityForm.
+    if ($form instanceof EntityFormInterface) {
+      // Get the entity from the form object for further processing.
+      $entity = $form->getEntity();
+      // Check whether entity is of node type, because currently only them are
+      // supported.
+      if ($entity instanceof NodeInterface) {
+        // Get the node type to get the Gutenberg experience setting.
+        $node_type = $entity->bundle();
+        /** @var \Drupal\Core\Config\Config $config */
+        $config = \Drupal::service('config.factory')
+          ->getEditable('gutenberg.settings');
+        $gutenberg_enabled = $config->get($node_type . '_enable_full');
+        if (!empty($gutenberg_enabled)) {
+          // Gutenberg experience is enabled for current content type and
+          // the current user is allowed to use the format.
+          $gutenberg_allowed = TRUE;
+        }
+      }
+    }
+    // If Gutenberg experience is not enabled for the current form or
+    // current user is not allowed to use the format, disable the choice of
+    // Gutenberg format for this element.
+    if (!$gutenberg_allowed) {
+      unset($element['format']['format']['#options']['gutenberg']);
+    }
+  }
+  return $element;
 }
