@@ -27,14 +27,20 @@ class ImageController extends ControllerBase {
     $imageSettings = $editor->getImageUploadSettings();
 
     $filename = $_FILES['files']['name']['fid'];
+    $directory = "{$imageSettings['scheme']}://{$imageSettings['directory']}";
     $data = file_get_contents($_FILES['files']['tmp_name']['fid']);
 
-    //TODO: file size and image dimensions validations.
+    //TODO: File size and image dimensions validations.
+    //      Better error handling?
+    if(file_prepare_directory($directory, FILE_CREATE_DIRECTORY)) {
+      $file = file_save_data($data, "{$directory}/{$filename}", FILE_EXISTS_RENAME);
+      $file->setTemporary();
+      $file->save();
+    }
+    else {
+      return new JsonResponse(null, 500);
+    }
 
-    $file = file_save_data($data, "{$imageSettings['scheme']}://{$imageSettings['directory']}/{$filename}", FILE_EXISTS_RENAME);
-    $file->setTemporary();
-    $file->save();
-  
     $image_src = file_create_url($file->getFileUri());
     return new JsonResponse([
       'id' => $file->id(),
