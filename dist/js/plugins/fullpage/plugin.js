@@ -54,7 +54,7 @@ var fullpage = (function () {
   var getDefaultDocType = function (editor) {
     return editor.getParam('fullpage_default_doctype', '<!DOCTYPE html>');
   };
-  var $_7rjdl7c7jkmcwoj4 = {
+  var $_6p8eivc7jjgwebsq = {
     shouldHideInSourceView: shouldHideInSourceView,
     getDefaultXmlPi: getDefaultXmlPi,
     getDefaultEncoding: getDefaultEncoding,
@@ -79,8 +79,8 @@ var fullpage = (function () {
       var value = elm.attr(name);
       return value || '';
     }
-    data.fontface = $_7rjdl7c7jkmcwoj4.getDefaultFontFamily(editor);
-    data.fontsize = $_7rjdl7c7jkmcwoj4.getDefaultFontSize(editor);
+    data.fontface = $_6p8eivc7jjgwebsq.getDefaultFontFamily(editor);
+    data.fontsize = $_6p8eivc7jjgwebsq.getDefaultFontSize(editor);
     elm = headerFragment.firstChild;
     if (elm.type === 7) {
       data.xml_pi = true;
@@ -288,14 +288,14 @@ var fullpage = (function () {
     }).serialize(headerFragment);
     return html.substring(0, html.indexOf('</body>'));
   };
-  var $_5rofa0c3jkmcwoix = {
+  var $_3qvuzvc3jjgwebsj = {
     parseHeader: parseHeader,
     htmlToData: htmlToData,
     dataToHtml: dataToHtml
   };
 
   var open = function (editor, headState) {
-    var data = $_5rofa0c3jkmcwoix.htmlToData(editor, headState.get());
+    var data = $_3qvuzvc3jjgwebsj.htmlToData(editor, headState.get());
     editor.windowManager.open({
       title: 'Document properties',
       data: data,
@@ -330,19 +330,19 @@ var fullpage = (function () {
         }
       ],
       onSubmit: function (e) {
-        var headHtml = $_5rofa0c3jkmcwoix.dataToHtml(editor, global$1.extend(data, e.data), headState.get());
+        var headHtml = $_3qvuzvc3jjgwebsj.dataToHtml(editor, global$1.extend(data, e.data), headState.get());
         headState.set(headHtml);
       }
     });
   };
-  var $_7mvolec1jkmcwoit = { open: open };
+  var $_2u43n8c1jjgwebsg = { open: open };
 
   var register = function (editor, headState) {
     editor.addCommand('mceFullPageProperties', function () {
-      $_7mvolec1jkmcwoit.open(editor, headState);
+      $_2u43n8c1jjgwebsg.open(editor, headState);
     });
   };
-  var $_4a9ny4c0jkmcwoir = { register: register };
+  var $_6zgagyc0jjgwebsf = { register: register };
 
   var protectHtml = function (protect, html) {
     global$1.each(protect, function (pattern) {
@@ -357,7 +357,7 @@ var fullpage = (function () {
       return unescape(m);
     });
   };
-  var $_7stjxwc9jkmcwoja = {
+  var $_dsaifac9jjgwebsx = {
     protectHtml: protectHtml,
     unprotectHtml: unprotectHtml
   };
@@ -375,11 +375,11 @@ var fullpage = (function () {
     if (evt.selection) {
       return;
     }
-    content = $_7stjxwc9jkmcwoja.protectHtml(editor.settings.protect, evt.content);
+    content = $_dsaifac9jjgwebsx.protectHtml(editor.settings.protect, evt.content);
     if (evt.format === 'raw' && headState.get()) {
       return;
     }
-    if (evt.source_view && $_7rjdl7c7jkmcwoj4.shouldHideInSourceView(editor)) {
+    if (evt.source_view && $_6p8eivc7jjgwebsq.shouldHideInSourceView(editor)) {
       return;
     }
     if (content.length === 0 && !evt.source_view) {
@@ -400,7 +400,7 @@ var fullpage = (function () {
       headState.set(getDefaultHeader(editor));
       footState.set('\n</body>\n</html>');
     }
-    headerFragment = $_5rofa0c3jkmcwoix.parseHeader(headState.get());
+    headerFragment = $_3qvuzvc3jjgwebsj.parseHeader(headState.get());
     each(headerFragment.getAll('style'), function (node) {
       if (node.firstChild) {
         styles += node.firstChild.value;
@@ -452,33 +452,33 @@ var fullpage = (function () {
   };
   var getDefaultHeader = function (editor) {
     var header = '', value, styles = '';
-    if ($_7rjdl7c7jkmcwoj4.getDefaultXmlPi(editor)) {
-      var piEncoding = $_7rjdl7c7jkmcwoj4.getDefaultEncoding(editor);
+    if ($_6p8eivc7jjgwebsq.getDefaultXmlPi(editor)) {
+      var piEncoding = $_6p8eivc7jjgwebsq.getDefaultEncoding(editor);
       header += '<?xml version="1.0" encoding="' + (piEncoding ? piEncoding : 'ISO-8859-1') + '" ?>\n';
     }
-    header += $_7rjdl7c7jkmcwoj4.getDefaultDocType(editor);
+    header += $_6p8eivc7jjgwebsq.getDefaultDocType(editor);
     header += '\n<html>\n<head>\n';
-    if (value = $_7rjdl7c7jkmcwoj4.getDefaultTitle(editor)) {
+    if (value = $_6p8eivc7jjgwebsq.getDefaultTitle(editor)) {
       header += '<title>' + value + '</title>\n';
     }
-    if (value = $_7rjdl7c7jkmcwoj4.getDefaultEncoding(editor)) {
+    if (value = $_6p8eivc7jjgwebsq.getDefaultEncoding(editor)) {
       header += '<meta http-equiv="Content-Type" content="text/html; charset=' + value + '" />\n';
     }
-    if (value = $_7rjdl7c7jkmcwoj4.getDefaultFontFamily(editor)) {
+    if (value = $_6p8eivc7jjgwebsq.getDefaultFontFamily(editor)) {
       styles += 'font-family: ' + value + ';';
     }
-    if (value = $_7rjdl7c7jkmcwoj4.getDefaultFontSize(editor)) {
+    if (value = $_6p8eivc7jjgwebsq.getDefaultFontSize(editor)) {
       styles += 'font-size: ' + value + ';';
     }
-    if (value = $_7rjdl7c7jkmcwoj4.getDefaultTextColor(editor)) {
+    if (value = $_6p8eivc7jjgwebsq.getDefaultTextColor(editor)) {
       styles += 'color: ' + value + ';';
     }
     header += '</head>\n<body' + (styles ? ' style="' + styles + '"' : '') + '>\n';
     return header;
   };
   var handleGetContent = function (editor, head, foot, evt) {
-    if (!evt.selection && (!evt.source_view || !$_7rjdl7c7jkmcwoj4.shouldHideInSourceView(editor))) {
-      evt.content = $_7stjxwc9jkmcwoja.unprotectHtml(global$1.trim(head) + '\n' + global$1.trim(evt.content) + '\n' + global$1.trim(foot));
+    if (!evt.selection && (!evt.source_view || !$_6p8eivc7jjgwebsq.shouldHideInSourceView(editor))) {
+      evt.content = $_dsaifac9jjgwebsx.unprotectHtml(global$1.trim(head) + '\n' + global$1.trim(evt.content) + '\n' + global$1.trim(foot));
     }
   };
   var setup = function (editor, headState, footState) {
@@ -489,7 +489,7 @@ var fullpage = (function () {
       handleGetContent(editor, headState.get(), footState.get(), evt);
     });
   };
-  var $_9yn4mc8jkmcwoj6 = { setup: setup };
+  var $_7zi75zc8jjgwebst = { setup: setup };
 
   var register$1 = function (editor) {
     editor.addButton('fullpage', {
@@ -502,13 +502,13 @@ var fullpage = (function () {
       context: 'file'
     });
   };
-  var $_ai61ducajkmcwojc = { register: register$1 };
+  var $_abne10cajjgwebsy = { register: register$1 };
 
   global.add('fullpage', function (editor) {
     var headState = Cell(''), footState = Cell('');
-    $_4a9ny4c0jkmcwoir.register(editor, headState);
-    $_ai61ducajkmcwojc.register(editor);
-    $_9yn4mc8jkmcwoj6.setup(editor, headState, footState);
+    $_6zgagyc0jjgwebsf.register(editor, headState);
+    $_abne10cajjgwebsy.register(editor);
+    $_7zi75zc8jjgwebst.setup(editor, headState, footState);
   });
   function Plugin () {
   }

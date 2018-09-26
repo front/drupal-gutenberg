@@ -39,12 +39,16 @@ module.exports = {
     new ExtractTextPlugin('css/main.css'),
     new CopyWebpackPlugin([
       {
-        from : 'node_modules/tinymce/plugins/',
+        from : 'node_modules/@frontkom/gutenberg-js/node_modules/tinymce/plugins/',
         to: 'js/plugins/'
       },
       {
-        from : 'node_modules/tinymce/themes/',
+        from : 'node_modules/@frontkom/gutenberg-js/node_modules/tinymce/themes/',
         to: 'js/themes/'
+      },
+      {
+        from : 'node_modules/@frontkom/gutenberg-js/node_modules/tinymce/skins/',
+        to: 'js/skins/'
       },
       {
         from : 'node_modules/@frontkom/gutenberg-js/build/css/style.css',
@@ -53,6 +57,10 @@ module.exports = {
       {
         from : 'node_modules/@frontkom/gutenberg-js/build/css/block-library/style.css',
         to: 'css/block-library/style.css'
+      },
+      {
+        from : 'node_modules/@frontkom/gutenberg-js/build/css/components/style.css',
+        to: 'css/components/style.css'
       },
       {
         from : 'node_modules/@frontkom/gutenberg-js/build/css/block-library/edit-blocks.css',

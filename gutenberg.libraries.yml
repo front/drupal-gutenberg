@@ -3,6 +3,7 @@ frontkom-gutenberg-editor:
   css:
     base:
       dist/css/block-library/style.css : {}
+      dist/css/components/style.css : {}
       dist/css/style.css : {}
       dist/css/nux/style.css : {}
       dist/css/editor/style.css : {}
