@@ -1,8 +1,0 @@
-name: Gutenberg Editor
-type: module
-description: "Smart editing for Drupal. Block-oriented."
-package: Gutenberg
-core: 8.x
-dependencies:
-  - drupal:editor
-  - drupal:node
