@@ -8,3 +8,4 @@ dependencies:
   - drupal:node
   - drupal:views
   - drupal:user
+  - drupal:block_content
