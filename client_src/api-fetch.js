@@ -27,12 +27,21 @@ const types = {
     publishable: false,
     autosaveable: false
   },
+  'block': {
+    name: 'Blocks', rest_base: 'blocks', slug: 'wp_block',
+    description: '',
+    supports: {
+      title: true,
+      editor: true,
+    },
+    viewable: false,
+  }
 };
 
 const requestPaths = {
-  'save-post': {
+  'save-page': {
     method: 'PUT',
-    regex: /\/wp\/v2\/(\w*)\/(\d*)/g,
+    regex: /\/wp\/v2\/page\/(\d*)/g,
     process: (matches, data) => {
       wp.node  = {
         pathType: 'save-post',
@@ -195,13 +204,145 @@ const requestPaths = {
       });
     }
   },
+  'load-type-block': {
+    method: 'GET',
+    regex: /\/wp\/v2\/types\/wp_block/g,
+    process: () => {
+      return new Promise(resolve => {
+        return resolve(types.block);
+      });
+    }
+  },
   'load-types': {
     method: 'GET',
     regex: /\/wp\/v2\/types/g,
     process: () => {
       return new Promise(resolve => {
         return resolve(types);
+      });
+    }
+  },
+
+  'update-block': {
+    method: 'PUT',
+    regex: /\/wp\/v2\/blocks\/(\d*)/g,
+    process: (matches, data) => {
+      return new Promise((resolve, reject) => {
+        jQuery.ajax({
+          method: 'PUT',
+          url: drupalSettings.path.baseUrl + 'editor/reusable-blocks/' + data.id,
+          data : JSON.stringify(data),
+          processData: false,
+          contentType: false,
+          accepts: {
+            json: 'application/json, text/javascript, */*; q=0.01'
+          },
+        })
+        .done(result => {
+          resolve(result);
+        })
+        .fail(err => {
+          reject('Error');
+        });
+      });
+    }
+  },
+
+  'delete-block': {
+    method: 'DELETE',
+    regex: /\/wp\/v2\/blocks\/(\d*)/g,
+    process: (matches) => {
+      return new Promise((resolve, reject) => {
+        jQuery.ajax({
+          method: 'DELETE',
+          url: drupalSettings.path.baseUrl + 'editor/reusable-blocks/' + matches[1],
+          processData: false,
+          contentType: false,
+          accepts: {
+            json: 'application/json, text/javascript, */*; q=0.01'
+          },
+        })
+        .done(result => {
+          resolve(result);
+        })
+        .fail(err => {
+          reject('Error');
+        });
+      });
+    }
+  },
+
+  'insert-block': {
+    method: 'POST',
+    regex: /\/wp\/v2\/blocks/g,
+    process: (matches, data, body) => {
+      console.log(matches, data);
+      return new Promise((resolve, reject) => {
+        const formData = new FormData();
+        formData.append('title', data.title);
+        formData.append('content', data.content);
+
+        jQuery.ajax({
+          method: 'POST',
+          url: drupalSettings.path.baseUrl + 'editor/reusable-blocks',
+          data : formData,
+          processData: false,
+          contentType: false,
+          accepts: {
+            json: 'application/json, text/javascript, */*; q=0.01'
+          },
+        })
+        .done(result => {
+          resolve(result);
+        })
+        .fail(() => {
+          reject('Error');
+        });
       });       
+    }
+  },
+  'load-block': {
+    method: 'GET',
+    regex: /\/wp\/v2\/blocks\/(\d*)/g,
+    process: (matches) => {
+      return new Promise((resolve, reject) => {
+        jQuery.ajax({
+          method: 'GET',
+          url: drupalSettings.path.baseUrl + 'editor/reusable-blocks/' + matches[1],
+          accepts: {
+            json: 'application/json, text/javascript, */*; q=0.01'
+          },
+        })
+        .done(result => {
+          resolve(result);
+        })
+        .fail(() => {
+          reject('Error');
+        });
+
+      });
+    }
+  },
+  'load-blocks': {
+    method: 'GET',
+    regex: /\/wp\/v2\/blocks\?(.*)/g,
+    process: () => {
+      return new Promise((resolve, reject) => {
+        jQuery.ajax({
+          method: 'GET',
+          url: drupalSettings.path.baseUrl + 'editor/reusable-blocks',
+          accepts: {
+            json: 'application/json, text/javascript, */*; q=0.01'
+          },
+        })
+        .done(result => {
+          resolve(result);
+        })
+        .fail(() => {
+          reject('Error');
+        });
+
+      });
     }
   }
 };
@@ -213,7 +354,7 @@ function processPath(options) {
       requestPath.regex.lastIndex = 0;
       let matches = requestPath.regex.exec(options.path + '');
 
-      if (matches && matches.length > 0 && (options.method || 'GET' === requestPath.method)) {
+      if (matches && matches.length > 0 && ((options.method && options.method === requestPath.method) || 'GET' === requestPath.method)) {
         return requestPath.process(matches, options.data, options.body);
       }
     }
@@ -233,5 +374,6 @@ function processPath(options) {
 }
 
 export default function apiFetch(options) {
+  console.log(options);
   return processPath(options);
 }

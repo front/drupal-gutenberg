@@ -33,3 +33,38 @@ gutenberg.blocks.load_single:
   requirements:
     _permission: 'access content'
     _method: 'GET'
+gutenberg.reusable_blocks.create:
+  path: '/editor/reusable-blocks'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\ReusableBlocksController::save'
+  methods: 'POST'
+  requirements:
+    _permission: 'access content'
+gutenberg.reusable_blocks.update:
+  path: '/editor/reusable-blocks/{block_id}'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\ReusableBlocksController::save'
+  methods: 'PUT'
+  requirements:
+    _permission: 'access content'
+gutenberg.reusable_blocks.delete:
+  path: '/editor/reusable-blocks/{block_id}'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\ReusableBlocksController::delete'
+  methods: 'DELETE'
+  requirements:
+    _permission: 'access content'
+gutenberg.reusable_blocks.load:
+  path: '/editor/reusable-blocks'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\ReusableBlocksController::load'
+  methods: 'GET'
+  requirements:
+    _permission: 'access content'
+gutenberg.reusable_blocks.load_single:
+  path: '/editor/reusable-blocks/{block_id}'
+  defaults:
+    _controller: '\Drupal\gutenberg\Controller\ReusableBlocksController::load'
+  methods: 'GET'
+  requirements:
+    _permission: 'access content'

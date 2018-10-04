@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: reusable_block
+label: 'Reusable block'
+revision: 0
+description: 'Build your block on Gutenberg editor and re-use it everywhere!'
