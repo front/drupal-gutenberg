@@ -34,10 +34,11 @@ class ReusableBlockDelete extends ActionBase {
    */
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
     /** @var \Drupal\block_content\BlockContentInterface $object */
-    $result = $object->access('update', $account, TRUE)
-      ->andIf($object->field_push->access('edit', $account, TRUE));
+    // $result = $object->access('update', $account, TRUE)
+    //   ->andIf($object->field_push->access('edit', $account, TRUE));
 
-    return $return_as_object ? $result : $result->isAllowed();
+    // return $return_as_object ? $result : $result->isAllowed();
+    return TRUE;
   }
 
 }
