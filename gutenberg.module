@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityFormBuilder;
 use Drupal\node\NodeInterface;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_form_alter().
@@ -156,7 +157,7 @@ function gutenberg_preprocess_node(&$variables) {
   $gutenberg_enabled = $config->get($node_type . '_enable_full');
 
   if ($gutenberg_enabled) {
-    $variables['#attached']['library'][] = 'gutenberg/frontkom-gutenberg-frontend';
+    $variables['#attached']['library'][] = 'gutenberg/frontend';
   }
 
   // if($variables['element']['#field_type'] === 'text_with_summary') {
@@ -305,4 +306,15 @@ function _gutenberg_text_format_processor($element, FormStateInterface $form_sta
     }
   }
   return $element;
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function gutenberg_views_pre_render(ViewExecutable $view) {
+  if ($view->id() == "reusable_blocks" && $view->current_display == 'page_1') {
+    // Attached Gutenberg's basic style to reusable blocks view.
+    $view->element['#attached']['library'][] = 'gutenberg/frontend';
+    $view->element['#attached']['library'][] = 'gutenberg/admin';
+  }
 }

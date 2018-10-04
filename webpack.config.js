@@ -1,10 +1,13 @@
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: './client_src/index.js',
+  entry: {
+    main: './client_src/index.js',
+    admin: './client_src/admin.js'
+  },
   output: {
     filename: 'js/[name].bundle.js',
     path: path.resolve(__dirname, 'dist')
@@ -22,21 +25,21 @@ module.exports = {
         use: 'babel-loader',
       },
       {
-        test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader', 'sass-loader']
-        })
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          MiniCssExtractPlugin.loader, // devMode ? 'style-loader' : 
+          'css-loader',
+          'sass-loader',
+        ],
       }
     ]
   },
   plugins: [
     new CleanWebpackPlugin(['dist']),
-    new ExtractTextPlugin('css/main.css'),
+    new MiniCssExtractPlugin({
+      filename: "css/[name].css",
+      chunkFilename: "css/[id].css"
+    }),
     new CopyWebpackPlugin([
       {
         from : 'node_modules/@frontkom/gutenberg-js/node_modules/tinymce/plugins/',
@@ -90,9 +93,10 @@ module.exports = {
           test: path.resolve(__dirname, 'node_modules'),
           name: 'vendor',
           enforce: true
-        }
+        },
       }
     }
-  },  
-  mode: 'production'
+  },
+  // devtool: 'source-map',
+  // mode: 'development'
 };

@@ -1,4 +1,7 @@
 # Schema for the configuration files of the CKEditor module.
+action.configuration.reusable_block_delete_action:
+  type: action_configuration_default
+  label: 'Delete reusable block'
 
 editor.settings.gutenberg:
   type: mapping

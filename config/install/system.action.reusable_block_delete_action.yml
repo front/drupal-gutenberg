@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies: 
+  module:
+    - block_content
+id: reusable_block_delete_action
+label: 'Delete reusable block'
+type: block_content
+plugin: reusable_block_delete_action
+configuration: {  }

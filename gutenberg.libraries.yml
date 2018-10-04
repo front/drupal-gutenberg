@@ -24,3 +24,10 @@ frontkom-gutenberg-frontend:
       dist/css/editor/style.css : {}
       dist/css/block-library/theme.css : {}
       dist/css/main.css : {}
+
+admin:
+  css:
+    base:
+      dist/css/admin.css: {}
+  js:
+    dist/js/admin.bundle.js: {}
