@@ -1,4 +1,4 @@
-frontkom-gutenberg-editor:
+editor:
   version: 2.*
   css:
     base:
@@ -14,7 +14,7 @@ frontkom-gutenberg-editor:
     dist/js/main.bundle.js: {}
     dist/js/vendor.bundle.js : {}
 
-frontkom-gutenberg-frontend:
+frontend:
   version: 2.*
   css:
     base:

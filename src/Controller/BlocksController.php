@@ -25,6 +25,7 @@ class BlocksController extends ControllerBase {
     $contextRepository = \Drupal::service('context.repository');
     // Get blocks definition
     $definitions = $blockManager->getDefinitionsForContexts($contextRepository->getAvailableContexts());
+    $definitions = $blockManager->getSortedDefinitions($definitions);
     return new JsonResponse($definitions);
   }
 
